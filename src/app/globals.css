@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --background: #111415;
+  --foreground: #e1e3e4;
+  --primary: #f2ca50;
+  --secondary: #c6c6c9;
+  --accent: #d4af37;
+  --sky-white: #ffffff;
+  --sand-beige: #99907c;
+  --outline-variant: #4d4635;
+  --surface-container: #1d2021;
+  --surface-container-high: #282a2b;
+  --surface-container-low: #191c1d;
+  --surface-container-lowest: #0c0f10;
+  --surface-bright: #373a3b;
+  --on-surface-variant: #d0c5af;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-latin: var(--font-dancing-script);
+  
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-sky-white: var(--sky-white);
+  --color-sand-beige: var(--sand-beige);
+  --color-outline-variant: var(--outline-variant);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-bright: var(--surface-bright);
+  --color-on-surface-variant: var(--on-surface-variant);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.glass-card {
+  background: rgba(17, 20, 21, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(153, 144, 124, 0.15);
+}
+
+.glass-panel {
+  background: rgba(17, 20, 21, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(153, 144, 124, 0.15);
+}
+
+.glow-hover:hover {
+  box-shadow: 0 0 20px rgba(242, 202, 80, 0.2);
+}
+
+.premium-gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
