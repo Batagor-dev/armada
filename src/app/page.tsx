@@ -240,128 +240,75 @@ export default function Home() {
     <div className="flex flex-col w-full min-h-screen bg-background text-foreground overflow-x-hidden" id="home">
       
       {/* 1. HERO BANNER */}
-<section className="relative min-h-[100vh] lg:min-h-[110vh] flex items-center justify-center bg-gradient-to-br from-[#0B1017] via-[#131A24] to-[#192332] pt-24 pb-48 overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden">
+        <div className="container mx-auto px-6 lg:px-12 py-20">
 
-  {/* Background Grid */}
-  <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_50%,#000_60%,transparent_100%)]"></div>
+          {/* Heading */}
+          <div className="text-center max-w-5xl mx-auto mb-12">
 
-  {/* Premium Ambient Glow */}
-  <div className="absolute top-20 left-20 w-[500px] h-[500px] bg-[#B48F5A]/15 rounded-full blur-[180px] animate-pulse"></div>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight text-gray-900">
+              Booking Kendaraan
+              <span className="block premium-gradient-text">
+                Mudah, Cepat & Terpercaya
+              </span>
+            </h1>
 
-  <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[220px]"></div>
+            <p className="mt-6 text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+              Sewa mobil harian, mingguan hingga bulanan dengan armada terbaik.
+              Tersedia layanan lepas kunci maupun dengan sopir profesional untuk
+              kebutuhan pribadi, bisnis, maupun perjalanan keluarga.
+            </p>
 
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-[#D9B77A]/5 rounded-full blur-[250px]"></div>
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+              <button className="bg-gradient-to-br from-[var(--secondary)] via-[var(--accent)] to-[#E8D5A8] hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold transition">
+                Booking Sekarang
+              </button>
 
-  {/* Spotlight From Top */}
-  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-white/10 via-[#D9B77A]/5 to-transparent blur-[120px]"></div>
+              <button className="border border-gray-300 hover:border-orange-500 hover:premium-gradient-text px-8 py-4 rounded-xl font-semibold transition">
+                Lihat Armada
+              </button>
+            </div>
+          </div>
 
-  {/* Decorative Orbs */}
-  <div className="absolute top-1/4 right-20 w-4 h-4 bg-[#D9B77A] rounded-full blur-sm animate-pulse"></div>
-  <div className="absolute bottom-1/3 left-24 w-3 h-3 bg-white rounded-full blur-sm animate-pulse"></div>
-  <div className="absolute top-2/3 right-1/3 w-2 h-2 bg-[#B48F5A] rounded-full blur-sm animate-ping"></div>
+          {/* Car Showcase */}
+          <div className="relative flex justify-center items-center">
 
-  {/* Main Content */}
-  <div className="relative z-10 max-w-[1400px] w-full mx-auto px-6 lg:px-12 grid lg:grid-cols-12 gap-12 items-center">
+            {/* Shadow */}
+            <div className="absolute bottom-0 w-[80%] h-20 bg-black/10 blur-3xl rounded-full"></div>
 
-    {/* LEFT CONTENT */}
-    <div className="lg:col-span-7 text-center lg:text-left">
+            {/* Background Glow */}
+            <div className="absolute w-[600px] h-[600px] bg-orange-400/10 rounded-full blur-[150px]"></div>
 
-      {/* Badge */}
-      <div className="inline-flex items-center gap-2 bg-[#B48F5A]/10 border border-[#B48F5A]/30 text-[#D9B77A] px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-6 backdrop-blur-sm">
-        <span className="material-symbols-outlined text-sm">
-          workspace_premium
-        </span>
-        Sewa Kendaraan Premium #1 di Indonesia
-      </div>
+            <img
+              src="/assets/images/banner/HeroBanner.png"
+              alt="Armada Kendaraan"
+              className="relative z-10 w-full max-w-6xl object-contain"
+            />
+          </div>
 
-      {/* Heading */}
-      <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6">
-        Perjalanan Sempurna Dimulai Dengan{" "}
-        <span className="bg-gradient-to-r from-[#B48F5A] via-[#D9B77A] to-[#E6D1A5] bg-clip-text text-transparent">
-          Armada Terbaik
-        </span>
-      </h1>
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
 
-      {/* Description */}
-      <p className="text-slate-300 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">
-        Sewa mobil lepas kunci maupun dengan sopir profesional. Armada
-        berkualitas, pelayanan terbaik, dan proses booking yang cepat untuk
-        setiap kebutuhan perjalanan Anda.
-      </p>
+            <div className="bg-gray-50 rounded-2xl p-6 text-center border">
+              <h3 className="text-3xl font-bold premium-gradient-text">500+</h3>
+              <p className="text-gray-600 mt-2">Unit Kendaraan</p>
+            </div>
 
-      {/* CTA Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10">
+            <div className="bg-gray-50 rounded-2xl p-6 text-center border">
+              <h3 className="text-3xl font-bold premium-gradient-text">10.000+</h3>
+              <p className="text-gray-600 mt-2">Pelanggan Puas</p>
+            </div>
 
-        <button className="bg-gradient-to-r from-[#B48F5A] to-[#D9B77A] hover:scale-105 transition-all duration-300 text-[#192332] font-bold px-8 py-4 rounded-xl shadow-[0_0_40px_rgba(180,143,90,0.35)]">
-          Booking Sekarang
-        </button>
+            <div className="bg-gray-50 rounded-2xl p-6 text-center border">
+              <h3 className="text-3xl font-bold premium-gradient-text">24/7</h3>
+              <p className="text-gray-600 mt-2">Layanan Customer Service</p>
+            </div>
 
-        <button className="border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 text-white font-semibold px-8 py-4 rounded-xl">
-          Lihat Armada
-        </button>
+          </div>
 
-      </div>
-
-      {/* Stats */}
-      <div className="flex flex-wrap justify-center lg:justify-start gap-4">
-
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 px-5 py-4 rounded-2xl">
-          <div className="text-[#D9B77A] font-bold text-2xl">500+</div>
-          <div className="text-slate-400 text-sm">Unit Kendaraan</div>
         </div>
-
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 px-5 py-4 rounded-2xl">
-          <div className="text-[#D9B77A] font-bold text-2xl">10K+</div>
-          <div className="text-slate-400 text-sm">Pelanggan Puas</div>
-        </div>
-
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 px-5 py-4 rounded-2xl">
-          <div className="text-[#D9B77A] font-bold text-2xl">24/7</div>
-          <div className="text-slate-400 text-sm">Customer Support</div>
-        </div>
-
-      </div>
-    </div>
-
-    {/* RIGHT CONTENT */}
-    <div className="lg:col-span-5 relative flex justify-center items-center">
-
-      {/* Gold Glow */}
-      <div className="absolute w-[700px] h-[700px] bg-[#B48F5A]/20 rounded-full blur-[150px]"></div>
-
-      {/* Blue Glow */}
-      <div className="absolute w-[550px] h-[550px] bg-blue-500/10 rounded-full blur-[120px]"></div>
-
-      {/* Floor Shadow */}
-      <div className="absolute bottom-10 w-[500px] h-[100px] bg-[#D9B77A]/20 rounded-full blur-[70px]"></div>
-
-      {/* Circular Ring */}
-      <div className="absolute w-[650px] h-[650px] border border-[#B48F5A]/10 rounded-full"></div>
-
-      <div className="absolute w-[500px] h-[500px] border border-[#B48F5A]/5 rounded-full"></div>
-
-      {/* Floating Particles */}
-      <div className="absolute top-16 left-20 w-3 h-3 bg-[#D9B77A] rounded-full blur-sm animate-ping"></div>
-
-      <div className="absolute top-32 right-20 w-2 h-2 bg-white rounded-full blur-sm animate-pulse"></div>
-
-      <div className="absolute bottom-24 left-16 w-2 h-2 bg-[#B48F5A] rounded-full blur-sm animate-pulse"></div>
-
-      {/* Main Car Image */}
-      <img
-        src="/assets/images/cars/multieCars.png"
-        alt="Premium Rental Car"
-        className="relative z-20 w-full min-w-[70px] object-contain drop-shadow-[0_50px_60px_rgba(0,0,0,0.85)] hover:scale-105 transition-all duration-700"
-      />
-
-    </div>
-
-  </div>
-
-  {/* Bottom Fade */}
-  <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0B1017] to-transparent"></div>
-
-</section>
+      </section>
 
       {/* 3. KENDARAAN UNGGULAN (FLEET SECTION) */}
       <section className="py-24 md:py-36 bg-slate-50 dark:bg-slate-950/20" id="fleet">
