@@ -1,20 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #111415;
-  --foreground: #e1e3e4;
-  --primary: #f2ca50;
-  --secondary: #c6c6c9;
-  --accent: #d4af37;
-  --sky-white: #ffffff;
-  --sand-beige: #99907c;
-  --outline-variant: #4d4635;
-  --surface-container: #1d2021;
-  --surface-container-high: #282a2b;
-  --surface-container-low: #191c1d;
-  --surface-container-lowest: #0c0f10;
-  --surface-bright: #373a3b;
-  --on-surface-variant: #d0c5af;
+  --background: #FFFFFF;
+  --foreground: #1A1A1A;
+
+  --primary: #192332;      /* Navy Luxury */
+  --secondary: #B48F5A;    /* Gold Bronze */
+  --accent: #D9B77A;       /* Light Gold */
+
+  --sky-white: #FFFFFF;
+  --sand-beige: #F4EFE7;
+
+  --border: #E8E8E8;
+  --muted: #737373;
 }
 
 @theme inline {
@@ -29,13 +27,13 @@
   --color-accent: var(--accent);
   --color-sky-white: var(--sky-white);
   --color-sand-beige: var(--sand-beige);
-  --color-outline-variant: var(--outline-variant);
-  --color-surface-container: var(--surface-container);
-  --color-surface-container-high: var(--surface-container-high);
-  --color-surface-container-low: var(--surface-container-low);
-  --color-surface-container-lowest: var(--surface-container-lowest);
-  --color-surface-bright: var(--surface-bright);
-  --color-on-surface-variant: var(--on-surface-variant);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000814; /* Much darker navy for dark mode */
+    --foreground: #F1F2F6;
+  }
 }
 
 html {
@@ -53,23 +51,13 @@ body {
 }
 
 .glass-card {
-  background: rgba(17, 20, 21, 0.6);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(153, 144, 124, 0.15);
-}
-
-.glass-panel {
-  background: rgba(17, 20, 21, 0.6);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(153, 144, 124, 0.15);
-}
-
-.glow-hover:hover {
-  box-shadow: 0 0 20px rgba(242, 202, 80, 0.2);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(227, 213, 202, 0.5); /* sand-beige border */
 }
 
 .premium-gradient-text {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -82,4 +70,3 @@ body {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
 }
-

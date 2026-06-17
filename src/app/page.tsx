@@ -1,469 +1,946 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useMemo } from "react";
 
-interface Brand {
-  name: string;
-  image: string | null;
-}
+// Mock data for our exclusive fleet
+const VEHICLES_DATABASE = [
+  {
+    id: 1,
+    name: "Toyota Alphard VIP",
+    type: "Luxury",
+    imageText: "👑 ALPHARD",
+    imageBg: "from-slate-700 to-slate-900",
+    price: 2400000,
+    seats: 7,
+    transmission: "Otomatis",
+    fuel: "Bensin",
+    locations: ["Jakarta", "Bali", "Surabaya"],
+    popular: true,
+    rating: 4.9,
+    description: "Kenyamanan kelas satu dengan kabin super mewah dan suspensi lembut, sangat cocok untuk perjalanan bisnis maupun keluarga terhormat.",
+  },
+  {
+    id: 2,
+    name: "Mitsubishi Pajero Sport",
+    type: "SUV",
+    imageText: "🏔️ PAJERO",
+    imageBg: "from-blue-800 to-slate-950",
+    price: 1100000,
+    seats: 7,
+    transmission: "Otomatis",
+    fuel: "Diesel",
+    locations: ["Jakarta", "Bandung", "Surabaya", "Malang"],
+    popular: true,
+    rating: 4.8,
+    description: "SUV tangguh yang siap melibas segala medan dengan kenyamanan premium dan kabin lapang untuk petualangan Anda.",
+  },
+  {
+    id: 3,
+    name: "Honda Civic Turbo RS",
+    type: "Sedan",
+    imageText: "⚡ CIVIC",
+    imageBg: "from-red-800 to-slate-900",
+    price: 1400000,
+    seats: 5,
+    transmission: "Otomatis",
+    fuel: "Bensin",
+    locations: ["Jakarta", "Bandung"],
+    popular: false,
+    rating: 4.7,
+    description: "Tampilan sporty dan performa mesin turbo bertenaga tinggi untuk Anda yang menyukai sensasi berkendara dinamis di perkotaan.",
+  },
+  {
+    id: 4,
+    name: "Toyota Innova Zenix Hybrid",
+    type: "MPV",
+    imageText: "🔋 ZENIX",
+    imageBg: "from-emerald-800 to-slate-900",
+    price: 850000,
+    seats: 7,
+    transmission: "Otomatis",
+    fuel: "Hybrid",
+    locations: ["Jakarta", "Bandung", "Surabaya", "Bali", "Malang"],
+    popular: true,
+    rating: 4.9,
+    description: "Teknologi hybrid modern yang super hemat bahan bakar namun tetap bertenaga dengan ruang kabin luas dan teknologi mutakhir.",
+  },
+  {
+    id: 5,
+    name: "Hyundai Ioniq 5 Electric",
+    type: "Luxury",
+    imageText: "⚡ IONIQ 5",
+    imageBg: "from-cyan-700 to-slate-900",
+    price: 1800000,
+    seats: 5,
+    transmission: "Otomatis",
+    fuel: "Listrik",
+    locations: ["Jakarta", "Bali"],
+    popular: false,
+    rating: 4.8,
+    description: "Kendaraan listrik futuristik dengan desain ikonik dan akselerasi instan. Bersih lingkungan tanpa kompromi pada kemewahan.",
+  },
+  {
+    id: 6,
+    name: "Daihatsu Rocky Turbo",
+    type: "SUV",
+    imageText: "⛰️ ROCKY",
+    imageBg: "from-amber-700 to-slate-900",
+    price: 550000,
+    seats: 5,
+    transmission: "Manual",
+    fuel: "Bensin",
+    locations: ["Surabaya", "Malang", "Bandung"],
+    popular: false,
+    rating: 4.6,
+    description: "Crossover kompak yang gesit dengan mesin turbo efisien. Sangat lincah menembus kemacetan kota atau jalanan menanjak.",
+  },
+  {
+    id: 7,
+    name: "Toyota Avanza Veloz",
+    type: "MPV",
+    imageText: "🚗 VELOZ",
+    imageBg: "from-indigo-800 to-slate-900",
+    price: 450000,
+    seats: 7,
+    transmission: "Otomatis",
+    fuel: "Bensin",
+    locations: ["Jakarta", "Bandung", "Surabaya", "Malang", "Bali"],
+    popular: false,
+    rating: 4.7,
+    description: "Mobil keluarga sejuta umat berdesain modern dengan fitur keselamatan terintegrasi lengkap dan suspensi yang nyaman.",
+  },
+  {
+    id: 8,
+    name: "Mercedes Benz C-Class",
+    type: "Sedan",
+    imageText: "⭐ C-CLASS",
+    imageBg: "from-neutral-700 to-slate-950",
+    price: 3200000,
+    seats: 5,
+    transmission: "Otomatis",
+    fuel: "Bensin",
+    locations: ["Jakarta", "Bali"],
+    popular: true,
+    rating: 4.9,
+    description: "Definisi kemewahan berkendara dengan kemudi presisi, fitur asisten mengemudi modern, dan prestise tak tertandingi.",
+  }
+];
 
-interface Category {
-  id: number;
-  uuid: string;
-  name: string;
-  description: string;
-}
-
-interface VehicleImage {
-  id: number;
-  image: string;
-  is_primary: number | boolean;
-}
-
-interface Vehicle {
-  id: number;
-  uuid: string;
-  name: string;
-  slug: string;
-  model: string | null;
-  year: number | null;
-  license_plate: string;
-  color: string | null;
-  seat_capacity: number | null;
-  transmission: string | null;
-  fuel_type: string | null;
-  mileage: number | null;
-  daily_price: number;
-  description: string | null;
-  featured: number;
-  brand: Brand | null;
-  vehiclecategories: Category | null;
-  images: VehicleImage[];
-}
+const LOCATIONS = ["Jakarta", "Bandung", "Surabaya", "Bali", "Malang"];
+const VEHICLE_TYPES = ["Semua Tipe", "SUV", "MPV", "Sedan", "Luxury"];
 
 export default function Home() {
-  const [brands, setBrands] = useState<Brand[]>([]);
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  // Search state
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [pickupDate, setPickupDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [selectedType, setSelectedType] = useState("Semua Tipe");
+  
+  // Filter active tab state (for Fleet section)
+  const [activeTab, setActiveTab] = useState("Semua Tipe");
 
-  // Search/Filter widget state
-  const [location, setLocation] = useState<string>("");
-  const [pickupDate, setPickupDate] = useState<string>("");
+  // Search filter results state
+  const [searchApplied, setSearchApplied] = useState(false);
+  const [searchQuery, setSearchQuery] = useState({
+    location: "",
+    type: "Semua Tipe"
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        // Fetch brands
-        const brandsRes = await fetch("http://127.0.0.1:8000/api/brand");
-        const brandsData = await brandsRes.json();
+  // Booking Modal state
+  const [selectedCar, setSelectedCar] = useState<typeof VEHICLES_DATABASE[0] | null>(null);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [bookingName, setBookingName] = useState("");
+  const [bookingPhone, setBookingPhone] = useState("");
+  const [driverOption, setDriverOption] = useState("lepas-kunci");
 
-        // Fetch vehicles
-        const vehiclesRes = await fetch("http://127.0.0.1:8000/api/vehicle");
-        const vehiclesData = await vehiclesRes.json();
+  // Handle main search submission
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSearchApplied(true);
+    setSearchQuery({
+      location: selectedLocation,
+      type: selectedType
+    });
+    // Sync fleet section active tab with search selection
+    setActiveTab(selectedType);
 
-        if (brandsData.success) {
-          setBrands(brandsData.data.brands || []);
-        }
-        if (vehiclesData.success) {
-          setVehicles(vehiclesData.data.vehicles || []);
-        }
-      } catch (err: any) {
-        console.error("Error fetching data:", err);
-        setError("Gagal memuat data dari server. Pastikan API backend berjalan.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const getVehicleImageUrl = (vehicle: Vehicle) => {
-    if (vehicle.images && vehicle.images.length > 0) {
-      const primary = vehicle.images.find((img) => img.is_primary);
-      return primary ? primary.image : vehicle.images[0].image;
+    // Smooth scroll to the fleet section
+    const fleetSection = document.getElementById("fleet");
+    if (fleetSection) {
+      fleetSection.scrollIntoView({ behavior: "smooth" });
     }
-    // Fallback premium image if no image available in database
-    return "https://lh3.googleusercontent.com/aida-public/AB6AXuCCmq0PuenP4D9-F5GiOR_UhoGN2XkrB1fA754tEsna0ARzdhc2mYfJULbQWtTpkqyQMZxeeA64OdioARD0uWUDBYQ4PTvZdClvsLP1r5PQ0fzJ9eLRqPZwMkDqaMwq7UBoa81xl1CZIQCJ4Jucwpj4FBi6gPskFJwWa82ORtALTI36hL3ejDaPRarrdtK0EfyDrCTkcYdEZ-ZVIltoKRyweW57hk8rX83p1cJvL9GFm2f1UFE1XQGdP_QVg1E-dMjUNv8kWAiJWcM";
   };
 
-  const getBrandImageUrl = (imagePath: string | null) => {
-    if (!imagePath) return null;
-    if (imagePath.startsWith("http")) return imagePath;
-    return `http://127.0.0.1:8000/storage/${imagePath}`;
+  // Reset filter search
+  const handleResetSearch = () => {
+    setSelectedLocation("");
+    setPickupDate("");
+    setReturnDate("");
+    setSelectedType("Semua Tipe");
+    setSearchApplied(false);
+    setActiveTab("Semua Tipe");
   };
 
-  const formatPrice = (price: number) => {
+  // Filter vehicles based on active tab and search query
+  const filteredVehicles = useMemo(() => {
+    return VEHICLES_DATABASE.filter((car) => {
+      // 1. Check tab filter
+      const matchesTab = activeTab === "Semua Tipe" || car.type === activeTab;
+      
+      // 2. Check search filter (only if search button was clicked)
+      if (searchApplied) {
+        const matchesLocation = !searchQuery.location || car.locations.includes(searchQuery.location);
+        const matchesSearchType = searchQuery.type === "Semua Tipe" || car.type === searchQuery.type;
+        return matchesTab && matchesLocation && matchesSearchType;
+      }
+
+      return matchesTab;
+    });
+  }, [activeTab, searchApplied, searchQuery]);
+
+  // Format currency helper
+  const formatRupiah = (number: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
       currency: "IDR",
       maximumFractionDigits: 0,
-    }).format(price);
+    }).format(number);
   };
 
-  // Filter vehicles by category
-  const filteredVehicles = vehicles.filter((vehicle) => {
-    if (selectedCategory === "All") return true;
-    return (
-      vehicle.vehiclecategories?.name.toLowerCase() ===
-      selectedCategory.toLowerCase()
-    );
-  });
+  // Handle booking form submission
+  const handleConfirmBooking = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!bookingName || !bookingPhone) return;
 
-  // Unique categories list from vehicles
-  const categories = ["All", "Mobil", "Motor"];
+    setBookingSuccess(true);
+    setTimeout(() => {
+      // Create WhatsApp Link with pre-filled message
+      const message = `Halo ArmadaKita, saya ingin melakukan pemesanan kendaraan:%0A%0A` +
+        `🚗 *Mobil:* ${selectedCar?.name}%0A` +
+        `📍 *Lokasi:* ${selectedLocation || "Jakarta"}%0A` +
+        `📅 *Tanggal Pinjam:* ${pickupDate || "Segera"}%0A` +
+        `📅 *Tanggal Kembali:* ${returnDate || "-"}%0A` +
+        `👤 *Nama:* ${bookingName}%0A` +
+        `📞 *No. WhatsApp:* ${bookingPhone}%0A` +
+        `🔑 *Layanan:* ${driverOption === "dengan-sopir" ? "Dengan Sopir" : "Lepas Kunci"}%0A%0A` +
+        `Mohon konfirmasi ketersediaan armada. Terima kasih!`;
+      
+      const whatsappUrl = `https://wa.me/628123456789?text=${message}`;
+      window.open(whatsappUrl, "_blank");
 
-  // WhatsApp helper
-  const handleWhatsAppRedirect = (vehicleName?: string) => {
-    const text = vehicleName
-      ? `Halo Grand Touring, saya tertarik untuk menyewa kendaraan ${vehicleName}. Apakah unit ini tersedia?`
-      : "Halo Grand Touring, saya ingin berkonsultasi mengenai penyewaan kendaraan mewah.";
-    const url = `https://wa.me/628123456789?text=${encodeURIComponent(text)}`;
-    window.open(url, "_blank");
+      // Reset states
+      setBookingSuccess(false);
+      setSelectedCar(null);
+      setBookingName("");
+      setBookingPhone("");
+    }, 1500);
   };
 
   return (
-    <div className="flex flex-col w-full min-h-screen pt-20">
-      {/* Hero Section */}
-      <section className="relative h-[90vh] min-h-[600px] flex items-center overflow-hidden">
-        {/* Background Image & Overlay */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCmq0PuenP4D9-F5GiOR_UhoGN2XkrB1fA754tEsna0ARzdhc2mYfJULbQWtTpkqyQMZxeeA64OdioARD0uWUDBYQ4PTvZdClvsLP1r5PQ0fzJ9eLRqPZwMkDqaMwq7UBoa81xl1CZIQCJ4Jucwpj4FBi6gPskFJwWa82ORtALTI36hL3ejDaPRarrdtK0EfyDrCTkcYdEZ-ZVIltoKRyweW57hk8rX83p1cJvL9GFm2f1UFE1XQGdP_QVg1E-dMjUNv8kWAiJWcM"
-            alt="Porsche 911 GT3"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent"></div>
+    <div className="flex flex-col w-full min-h-screen bg-background text-foreground overflow-x-hidden" id="home">
+      
+      {/* 1. HERO BANNER */}
+<section className="relative min-h-[100vh] lg:min-h-[110vh] flex items-center justify-center bg-gradient-to-br from-[#0B1017] via-[#131A24] to-[#192332] pt-24 pb-48 overflow-hidden">
+
+  {/* Background Grid */}
+  <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_50%,#000_60%,transparent_100%)]"></div>
+
+  {/* Premium Ambient Glow */}
+  <div className="absolute top-20 left-20 w-[500px] h-[500px] bg-[#B48F5A]/15 rounded-full blur-[180px] animate-pulse"></div>
+
+  <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[220px]"></div>
+
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-[#D9B77A]/5 rounded-full blur-[250px]"></div>
+
+  {/* Spotlight From Top */}
+  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-white/10 via-[#D9B77A]/5 to-transparent blur-[120px]"></div>
+
+  {/* Decorative Orbs */}
+  <div className="absolute top-1/4 right-20 w-4 h-4 bg-[#D9B77A] rounded-full blur-sm animate-pulse"></div>
+  <div className="absolute bottom-1/3 left-24 w-3 h-3 bg-white rounded-full blur-sm animate-pulse"></div>
+  <div className="absolute top-2/3 right-1/3 w-2 h-2 bg-[#B48F5A] rounded-full blur-sm animate-ping"></div>
+
+  {/* Main Content */}
+  <div className="relative z-10 max-w-[1400px] w-full mx-auto px-6 lg:px-12 grid lg:grid-cols-12 gap-12 items-center">
+
+    {/* LEFT CONTENT */}
+    <div className="lg:col-span-7 text-center lg:text-left">
+
+      {/* Badge */}
+      <div className="inline-flex items-center gap-2 bg-[#B48F5A]/10 border border-[#B48F5A]/30 text-[#D9B77A] px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider mb-6 backdrop-blur-sm">
+        <span className="material-symbols-outlined text-sm">
+          workspace_premium
+        </span>
+        Sewa Kendaraan Premium #1 di Indonesia
+      </div>
+
+      {/* Heading */}
+      <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-6">
+        Perjalanan Sempurna Dimulai Dengan{" "}
+        <span className="bg-gradient-to-r from-[#B48F5A] via-[#D9B77A] to-[#E6D1A5] bg-clip-text text-transparent">
+          Armada Terbaik
+        </span>
+      </h1>
+
+      {/* Description */}
+      <p className="text-slate-300 text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">
+        Sewa mobil lepas kunci maupun dengan sopir profesional. Armada
+        berkualitas, pelayanan terbaik, dan proses booking yang cepat untuk
+        setiap kebutuhan perjalanan Anda.
+      </p>
+
+      {/* CTA Buttons */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10">
+
+        <button className="bg-gradient-to-r from-[#B48F5A] to-[#D9B77A] hover:scale-105 transition-all duration-300 text-[#192332] font-bold px-8 py-4 rounded-xl shadow-[0_0_40px_rgba(180,143,90,0.35)]">
+          Booking Sekarang
+        </button>
+
+        <button className="border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 transition-all duration-300 text-white font-semibold px-8 py-4 rounded-xl">
+          Lihat Armada
+        </button>
+
+      </div>
+
+      {/* Stats */}
+      <div className="flex flex-wrap justify-center lg:justify-start gap-4">
+
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 px-5 py-4 rounded-2xl">
+          <div className="text-[#D9B77A] font-bold text-2xl">500+</div>
+          <div className="text-slate-400 text-sm">Unit Kendaraan</div>
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-16 w-full">
-          <div className="max-w-2xl animate-fade-in">
-            <h1 className="font-display text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-              Sewa Mobil Mewah &amp; Eksklusif untuk Perjalanan Anda
-            </h1>
-            <p className="text-lg md:text-xl text-on-surface-variant mb-10 max-w-lg leading-relaxed">
-              Nikmati pengalaman berkendara kelas dunia dengan armada pilihan terbaik kami yang selalu terawat sempurna.
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 px-5 py-4 rounded-2xl">
+          <div className="text-[#D9B77A] font-bold text-2xl">10K+</div>
+          <div className="text-slate-400 text-sm">Pelanggan Puas</div>
+        </div>
+
+        <div className="bg-white/5 backdrop-blur-md border border-white/10 px-5 py-4 rounded-2xl">
+          <div className="text-[#D9B77A] font-bold text-2xl">24/7</div>
+          <div className="text-slate-400 text-sm">Customer Support</div>
+        </div>
+
+      </div>
+    </div>
+
+    {/* RIGHT CONTENT */}
+    <div className="lg:col-span-5 relative flex justify-center items-center">
+
+      {/* Gold Glow */}
+      <div className="absolute w-[700px] h-[700px] bg-[#B48F5A]/20 rounded-full blur-[150px]"></div>
+
+      {/* Blue Glow */}
+      <div className="absolute w-[550px] h-[550px] bg-blue-500/10 rounded-full blur-[120px]"></div>
+
+      {/* Floor Shadow */}
+      <div className="absolute bottom-10 w-[500px] h-[100px] bg-[#D9B77A]/20 rounded-full blur-[70px]"></div>
+
+      {/* Circular Ring */}
+      <div className="absolute w-[650px] h-[650px] border border-[#B48F5A]/10 rounded-full"></div>
+
+      <div className="absolute w-[500px] h-[500px] border border-[#B48F5A]/5 rounded-full"></div>
+
+      {/* Floating Particles */}
+      <div className="absolute top-16 left-20 w-3 h-3 bg-[#D9B77A] rounded-full blur-sm animate-ping"></div>
+
+      <div className="absolute top-32 right-20 w-2 h-2 bg-white rounded-full blur-sm animate-pulse"></div>
+
+      <div className="absolute bottom-24 left-16 w-2 h-2 bg-[#B48F5A] rounded-full blur-sm animate-pulse"></div>
+
+      {/* Main Car Image */}
+      <img
+        src="/assets/images/cars/multieCars.png"
+        alt="Premium Rental Car"
+        className="relative z-20 w-full min-w-[70px] object-contain drop-shadow-[0_50px_60px_rgba(0,0,0,0.85)] hover:scale-105 transition-all duration-700"
+      />
+
+    </div>
+
+  </div>
+
+  {/* Bottom Fade */}
+  <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0B1017] to-transparent"></div>
+
+</section>
+
+      {/* 3. KENDARAAN UNGGULAN (FLEET SECTION) */}
+      <section className="py-24 md:py-36 bg-slate-50 dark:bg-slate-950/20" id="fleet">
+        <div className="max-w-[1280px] w-full mx-auto px-4 md:px-8 lg:px-16">
+          
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-xs font-black text-primary uppercase tracking-widest mb-3">Katalog Kendaraan</h2>
+            <p className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
+              Kendaraan Unggulan Kami
             </p>
-
-            {/* Booking Widget */}
-            <div className="glass-panel p-6 rounded-2xl max-w-3xl flex flex-col md:flex-row gap-4 items-end shadow-2xl">
-              <div className="flex-1 w-full space-y-2">
-                <label className="text-xs font-semibold text-primary uppercase tracking-wider">
-                  Lokasi
-                </label>
-                <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary">
-                    location_on
-                  </span>
-                  <input
-                    type="text"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    placeholder="Pilih Kota"
-                    className="w-full bg-surface-container border border-outline-variant/30 rounded-lg pl-10 pr-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="flex-1 w-full space-y-2">
-                <label className="text-xs font-semibold text-primary uppercase tracking-wider">
-                  Tanggal Ambil
-                </label>
-                <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary">
-                    calendar_today
-                  </span>
-                  <input
-                    type="date"
-                    value={pickupDate}
-                    onChange={(e) => setPickupDate(e.target.value)}
-                    className="w-full bg-surface-container border border-outline-variant/30 rounded-lg pl-10 pr-4 py-3 text-foreground focus:outline-none focus:border-primary transition-colors text-sm"
-                  />
-                </div>
-              </div>
-
-              <button
-                onClick={() => handleWhatsAppRedirect()}
-                className="w-full md:w-auto bg-primary text-on-primary px-8 py-3.5 rounded-xl font-bold hover:bg-accent transition-all active:scale-95 glow-hover text-sm"
-              >
-                Cari Mobil
-              </button>
-            </div>
+            <p className="text-slate-500 text-sm">
+              Temukan pilihan kendaraan terbaik yang siap menemani perjalanan Anda. Dari kendaraan mewah, keluarga, hingga petualangan tangguh.
+            </p>
           </div>
-        </div>
-      </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-24 bg-background">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Feature Card 1 */}
-            <div className="glass-panel p-8 rounded-2xl hover:bg-surface-container-high transition-all duration-300 group">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors duration-300">
-                <span className="material-symbols-outlined text-primary group-hover:text-on-primary">
-                  directions_car
-                </span>
-              </div>
-              <h3 className="text-xl font-bold mb-4 font-display text-foreground">
-                Armada Eksklusif
-              </h3>
-              <p className="text-on-surface-variant text-sm leading-relaxed">
-                Koleksi mobil sport dan luxury terbaik yang selalu terawat dengan standar pabrikan tertinggi.
-              </p>
-            </div>
-
-            {/* Feature Card 2 */}
-            <div className="glass-panel p-8 rounded-2xl hover:bg-surface-container-high transition-all duration-300 group">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors duration-300">
-                <span className="material-symbols-outlined text-primary group-hover:text-on-primary">
-                  support_agent
-                </span>
-              </div>
-              <h3 className="text-xl font-bold mb-4 font-display text-foreground">
-                Dukungan 24/7
-              </h3>
-              <p className="text-on-surface-variant text-sm leading-relaxed">
-                Layanan concierge pribadi kami siap membantu kebutuhan perjalanan Anda kapan saja, di mana saja.
-              </p>
-            </div>
-
-            {/* Feature Card 3 */}
-            <div className="glass-panel p-8 rounded-2xl hover:bg-surface-container-high transition-all duration-300 group">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary transition-colors duration-300">
-                <span className="material-symbols-outlined text-primary group-hover:text-on-primary">
-                  verified_user
-                </span>
-              </div>
-              <h3 className="text-xl font-bold mb-4 font-display text-foreground">
-                Pemesanan Fleksibel
-              </h3>
-              <p className="text-on-surface-variant text-sm leading-relaxed">
-                Proses penyewaan yang mudah dan cepat dengan berbagai pilihan paket asuransi premium terlengkap.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Brand Logos Grid Section */}
-      <section className="py-16 bg-background border-t border-outline-variant/10">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16">
-          {brands.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-items-center mb-16 opacity-60 hover:opacity-100 transition-opacity duration-500">
-              {brands.map((brand, idx) => {
-                const imgUrl = getBrandImageUrl(brand.image);
-                return (
-                  <div
-                    key={idx}
-                    className="h-12 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
-                    title={brand.name}
-                  >
-                    {imgUrl ? (
-                      <img
-                        src={imgUrl}
-                        alt={brand.name}
-                        className="h-full object-contain max-w-[120px]"
-                        onError={(e) => {
-                          // If image fails to load, replace with styled text badge
-                          (e.target as HTMLElement).style.display = "none";
-                          const container = (e.target as HTMLElement).parentElement;
-                          if (container) {
-                            const badge = document.createElement("span");
-                            badge.className = "text-primary tracking-[0.2em] uppercase text-sm font-bold";
-                            badge.innerText = brand.name;
-                            container.appendChild(badge);
-                          }
-                        }}
-                      />
-                    ) : (
-                      <span className="text-primary tracking-[0.2em] uppercase text-sm font-bold">
-                        {brand.name}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Category Filter */}
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            {categories.map((cat) => (
+          {/* Tabs Filter */}
+          <div className="flex flex-wrap justify-center items-center gap-2 mb-12">
+            {VEHICLE_TYPES.map((type) => (
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-6 py-2 rounded-full border text-sm font-semibold transition-all duration-300 active:scale-95 ${
-                  selectedCategory.toLowerCase() === cat.toLowerCase()
-                    ? "border-primary bg-primary text-on-primary shadow-[0_0_15px_rgba(242,202,80,0.2)]"
-                    : "border-outline-variant/30 text-on-surface-variant hover:border-primary hover:text-primary"
+                key={type}
+                onClick={() => setActiveTab(type)}
+                className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${
+                  activeTab === type
+                    ? "bg-primary text-white shadow-md shadow-blue-500/20"
+                    : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-350 dark:hover:border-slate-700"
                 }`}
               >
-                {cat}
+                {type}
               </button>
             ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Fleet Showcase Grid */}
-      <section id="fleet" className="py-24 bg-surface-container-low">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 gap-4">
-            <div>
-              <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
-                Pilih Kendaraan Impian Anda
-              </h2>
-              <p className="text-on-surface-variant text-sm mt-2">
-                Temukan mobil sport performa tinggi dan skuter otomatis premium untuk kebutuhan mobilitas Anda.
-              </p>
-            </div>
-            <button
-              onClick={() => handleWhatsAppRedirect()}
-              className="text-primary font-bold flex items-center gap-2 hover:gap-3 transition-all duration-300"
-            >
-              Lihat Semua <span className="material-symbols-outlined">arrow_forward</span>
-            </button>
-          </div>
-
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 gap-4">
-              <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-on-surface-variant text-sm">Memuat armada pilihan...</p>
-            </div>
-          ) : error ? (
-            <div className="text-center py-12 glass-panel rounded-2xl max-w-lg mx-auto">
-              <span className="material-symbols-outlined text-error text-5xl mb-4">error</span>
-              <p className="text-foreground font-semibold mb-2">{error}</p>
+            {searchApplied && (
               <button
-                onClick={() => window.location.reload()}
-                className="mt-4 bg-primary text-on-primary px-6 py-2 rounded-xl text-sm font-semibold hover:bg-accent transition-all"
+                onClick={handleResetSearch}
+                className="px-4 py-2.5 rounded-full text-xs font-bold text-red-500 hover:text-red-700 border border-red-500/20 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all flex items-center gap-1 cursor-pointer"
               >
-                Coba Lagi
+                <span className="material-symbols-outlined text-xs">close</span>
+                Reset Cari: &quot;{searchQuery.location || "Semua Kota"}&quot;
               </button>
-            </div>
-          ) : filteredVehicles.length === 0 ? (
-            <div className="text-center py-20 text-on-surface-variant">
-              Belum ada kendaraan dalam kategori ini.
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {filteredVehicles.map((vehicle) => {
-                const imgUrl = getVehicleImageUrl(vehicle);
-                return (
-                  <div
-                    key={vehicle.uuid}
-                    onClick={() => handleWhatsAppRedirect(vehicle.name)}
-                    className="glass-panel group cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.02] hover:bg-surface-container-high hover:shadow-2xl"
-                  >
-                    {/* Image Box */}
-                    <div className="relative aspect-[4/3] overflow-hidden bg-surface-container-lowest">
-                      <img
-                        src={imgUrl}
-                        alt={vehicle.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-md px-4 py-1 rounded-full text-primary font-bold text-xs uppercase tracking-wider border border-primary/20">
-                        {vehicle.vehiclecategories?.name || "KENDARAAN"}
-                      </div>
+            )}
+          </div>
+
+          {/* Cards Grid */}
+          {filteredVehicles.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {filteredVehicles.map((car) => (
+                <div
+                  key={car.id}
+                  className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-850 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group"
+                >
+                  {/* Visual Image Area (using nice CSS with gradient and branding instead of placeholder links) */}
+                  <div className={`h-48 bg-gradient-to-br ${car.imageBg} relative flex items-center justify-center select-none overflow-hidden`}>
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <span className="text-white font-black text-2xl tracking-widest drop-shadow-md transform group-hover:scale-110 transition-transform duration-500">
+                      {car.imageText}
+                    </span>
+                    
+                    {/* Tags */}
+                    <div className="absolute top-4 left-4 flex gap-2">
+                      <span className="bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        {car.type}
+                      </span>
+                      {car.popular && (
+                        <span className="bg-accent text-slate-900 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-0.5">
+                          <span className="material-symbols-outlined text-[10px]">local_fire_department</span>
+                          Terlaris
+                        </span>
+                      )}
                     </div>
 
-                    {/* Metadata & Title */}
-                    <div className="p-6">
-                      <span className="text-xs font-bold text-primary uppercase tracking-widest">
-                        {vehicle.brand?.name || "MEREK"}
-                      </span>
-                      <h4 className="text-xl font-bold font-display text-foreground mt-1 mb-2 group-hover:text-primary transition-colors">
-                        {vehicle.name} {vehicle.model && `(${vehicle.model})`}
-                      </h4>
-                      <p className="text-on-surface-variant text-sm mb-4 line-clamp-2 min-h-[40px]">
-                        {vehicle.description || "Tidak ada deskripsi tersedia."}
-                      </p>
-
-                      {/* Specs Tags */}
-                      <div className="flex flex-wrap items-center gap-4 text-xs text-on-surface-variant mb-6 uppercase tracking-wider font-semibold border-t border-outline-variant/10 pt-4">
-                        <span className="flex items-center gap-1">
-                          <span className="material-symbols-outlined text-base text-primary">
-                            settings
-                          </span>
-                          {vehicle.transmission || "Manual"}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <span className="material-symbols-outlined text-base text-primary">
-                            airline_seat_recline_extra
-                          </span>
-                          {vehicle.seat_capacity || 2} Kursi
-                        </span>
-                        {vehicle.fuel_type && (
-                          <span className="flex items-center gap-1">
-                            <span className="material-symbols-outlined text-base text-primary">
-                              local_gas_station
-                            </span>
-                            {vehicle.fuel_type}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Pricing Tag */}
-                      <div className="flex items-center justify-between pt-4 border-t border-outline-variant/10">
-                        <div>
-                          <p className="text-xs text-on-surface-variant">Harga Sewa</p>
-                          <p className="text-primary font-bold text-xl mt-1">
-                            {formatPrice(vehicle.daily_price)}
-                            <span className="text-on-surface-variant text-xs font-normal">
-                              /hari
-                            </span>
-                          </p>
-                        </div>
-                        <span className="bg-primary/10 group-hover:bg-primary text-primary group-hover:text-on-primary p-3 rounded-xl transition-all duration-300">
-                          <span className="material-symbols-outlined font-bold">
-                            arrow_forward
-                          </span>
-                        </span>
-                      </div>
+                    {/* Rating */}
+                    <div className="absolute top-4 right-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-slate-900 dark:text-white text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
+                      <span className="material-symbols-outlined text-accent text-xs">star</span>
+                      {car.rating}
                     </div>
                   </div>
-                );
-              })}
+
+                  {/* Body Content */}
+                  <div className="p-6">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
+                      {car.name}
+                    </h3>
+                    
+                    {/* Location Badge */}
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {car.locations.map((loc) => (
+                        <span key={loc} className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-semibold px-2 py-0.5 rounded">
+                          📍 {loc}
+                        </span>
+                      ))}
+                    </div>
+
+                    <p className="text-slate-500 text-xs mt-3 line-clamp-2 h-8 leading-relaxed">
+                      {car.description}
+                    </p>
+
+                    {/* Specs Grid */}
+                    <div className="grid grid-cols-3 gap-2 border-t border-b border-slate-100 dark:border-slate-800/80 my-4 py-3 text-slate-500 dark:text-slate-400">
+                      <div className="flex flex-col items-center justify-center text-center">
+                        <span className="material-symbols-outlined text-slate-400 text-lg mb-1">group</span>
+                        <span className="text-[10px] font-bold">{car.seats} Kursi</span>
+                      </div>
+                      <div className="flex flex-col items-center justify-center text-center border-l border-r border-slate-100 dark:border-slate-800/80">
+                        <span className="material-symbols-outlined text-slate-400 text-lg mb-1">settings_input_hdmi</span>
+                        <span className="text-[10px] font-bold">{car.transmission}</span>
+                      </div>
+                      <div className="flex flex-col items-center justify-center text-center">
+                        <span className="material-symbols-outlined text-slate-400 text-lg mb-1">local_gas_station</span>
+                        <span className="text-[10px] font-bold">{car.fuel}</span>
+                      </div>
+                    </div>
+
+                    {/* Pricing & CTA */}
+                    <div className="flex items-center justify-between pt-1">
+                      <div>
+                        <span className="text-slate-400 text-[10px] block font-semibold uppercase tracking-wider">Mulai Dari</span>
+                        <span className="text-base font-black text-slate-900 dark:text-white">
+                          {formatRupiah(car.price)}
+                          <span className="text-slate-500 text-[10px] font-medium">/hari</span>
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => setSelectedCar(car)}
+                        className="bg-primary hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-md shadow-blue-500/10"
+                      >
+                        Sewa Sekarang
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center max-w-xl mx-auto">
+              <span className="material-symbols-outlined text-slate-300 text-6xl mb-4">search_off</span>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Armada Tidak Ditemukan</h3>
+              <p className="text-slate-500 text-sm mb-6">
+                Maaf, tidak ada armada tipe &quot;{activeTab}&quot; yang tersedia untuk lokasi yang Anda cari saat ini. Silakan coba pilih kota atau tipe kendaraan yang lain.
+              </p>
+              <button
+                onClick={handleResetSearch}
+                className="bg-primary hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition-all cursor-pointer"
+              >
+                Lihat Semua Armada
+              </button>
             </div>
           )}
+
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-background">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-16">
-          <div className="relative overflow-hidden rounded-[2rem] bg-surface-container-highest p-12 md:p-20 text-center shadow-2xl">
-            {/* Ambient Glows */}
-            <div className="absolute -top-24 -left-24 w-96 h-96 bg-primary/10 rounded-full blur-[100px]"></div>
-            <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-[100px]"></div>
-
-            <div className="relative z-10 max-w-2xl mx-auto">
-              <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-8">
-                Siap Menyewa Kendaraan Hari Ini?
-              </h2>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <button
-                  onClick={() => handleWhatsAppRedirect()}
-                  className="w-full sm:w-auto bg-primary text-on-primary px-10 py-4 rounded-xl font-bold text-lg hover:bg-accent transition-all active:scale-95 glow-hover"
-                >
-                  Pesan Sekarang
-                </button>
-                <button
-                  onClick={() => handleWhatsAppRedirect()}
-                  className="w-full sm:w-auto glass-panel text-foreground px-10 py-4 rounded-xl font-bold text-lg border border-outline-variant/30 hover:bg-surface-container-high transition-all flex items-center justify-center gap-2"
-                >
-                  <span className="material-symbols-outlined text-primary">chat</span>{" "}
-                  Hubungi via WhatsApp
-                </button>
+      {/* 4. WHY CHOOSE US (KENAPA MEMILIH KAMI) */}
+      <section className="py-24 md:py-36 bg-white dark:bg-slate-900" id="about">
+        <div className="max-w-[1280px] w-full mx-auto px-4 md:px-8 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            
+            {/* Header Content */}
+            <div className="lg:col-span-5 space-y-6">
+              <h2 className="text-xs font-black text-primary uppercase tracking-widest">Kenapa Memilih Kami</h2>
+              <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight tracking-tight">
+                Mengutamakan Kenyamanan dan Keselamatan Perjalanan Anda
+              </h3>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                ArmadaKita hadir sebagai solusi andalan sewa kendaraan Anda. Kami memiliki standar operasional ketat untuk memastikan Anda selalu berkendara dengan rasa aman, nyaman, dan puas.
+              </p>
+              <div className="p-6 bg-slate-50 dark:bg-slate-800/40 rounded-3xl border border-slate-100 dark:border-slate-800 flex items-start gap-4">
+                <span className="material-symbols-outlined text-primary text-3xl bg-blue-500/10 p-3 rounded-2xl">workspace_premium</span>
+                <div>
+                  <h4 className="font-bold text-slate-950 dark:text-white text-sm mb-1">Jaminan Layanan Premium</h4>
+                  <p className="text-slate-500 text-xs leading-relaxed">
+                    Setiap pemesanan dikawal oleh tim customer service profesional untuk membantu kebutuhan perjalanan Anda secara lancar.
+                  </p>
+                </div>
               </div>
+            </div>
+
+            {/* Benefit Grid */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8">
+              
+              {/* Card 1 */}
+              <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <span className="material-symbols-outlined text-primary text-4xl mb-6">health_and_safety</span>
+                <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Armada Selalu Prima</h4>
+                <p className="text-slate-500 text-xs leading-relaxed">
+                  Semua kendaraan menjalani pemeriksaan teknis rutin lengkap di bengkel resmi serta pembersihan interior & eksterior mendalam sebelum diserahkan kepada Anda.
+                </p>
+              </div>
+
+              {/* Card 2 */}
+              <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <span className="material-symbols-outlined text-accent text-4xl mb-6">sell</span>
+                <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Harga Jujur & Transparan</h4>
+                <p className="text-slate-500 text-xs leading-relaxed">
+                  Tidak ada biaya siluman. Seluruh detail harga sewa per hari, opsi asuransi, maupun biaya supir tertera dengan sangat transparan di awal transaksi.
+                </p>
+              </div>
+
+              {/* Card 3 */}
+              <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <span className="material-symbols-outlined text-emerald-500 text-4xl mb-6">support_agent</span>
+                <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Layanan Darurat 24 Jam</h4>
+                <p className="text-slate-500 text-xs leading-relaxed">
+                  Jika terjadi kendala teknis atau kecelakaan di jalan raya, tim tanggap darurat kami siap dikirim ke lokasi Anda kapan saja, 24 jam sehari, 7 hari seminggu.
+                </p>
+              </div>
+
+              {/* Card 4 */}
+              <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <span className="material-symbols-outlined text-purple-500 text-4xl mb-6">vpn_key</span>
+                <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Supir & Lepas Kunci</h4>
+                <p className="text-slate-500 text-xs leading-relaxed">
+                  Nikmati kebebasan menyetir sendiri dengan layanan lepas kunci, atau sewa bersama supir profesional kami yang ramah, berpengalaman, dan menguasai rute kota.
+                </p>
+              </div>
+
             </div>
           </div>
         </div>
       </section>
+
+      {/* 5. CARA BOOKING (TUTORIAL SECTION) */}
+      <section className="py-24 md:py-36 bg-slate-50 dark:bg-slate-950/20" id="tutorial">
+        <div className="max-w-[1280px] w-full mx-auto px-4 md:px-8 lg:px-16">
+          
+          <div className="text-center max-w-2xl mx-auto mb-20">
+            <h2 className="text-xs font-black text-primary uppercase tracking-widest mb-3">Cara Sewa</h2>
+            <p className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
+              Langkah Pemesanan Sangat Mudah
+            </p>
+            <p className="text-slate-500 text-sm">
+              Kami menyederhanakan proses penyewaan kendaraan agar Anda dapat segera memulai perjalanan tanpa hambatan administrasi yang rumit.
+            </p>
+          </div>
+
+          {/* Interactive Steps Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+            
+            {/* Horizontal progress line for desktop */}
+            <div className="hidden md:block absolute top-16 left-1/8 right-1/8 h-0.5 bg-slate-200 dark:bg-slate-800 z-0"></div>
+
+            {/* Step 1 */}
+            <div className="relative z-10 flex flex-col items-center text-center group">
+              <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-primary font-black text-xl mb-6 shadow-md group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                1
+              </div>
+              <h3 className="text-lg font-bold text-slate-950 dark:text-white mb-2">Pilih Kendaraan</h3>
+              <p className="text-slate-500 text-xs max-w-[200px] leading-relaxed">
+                Tentukan tipe mobil yang sesuai dengan kebutuhan kapasitas dan estetika perjalanan Anda dari katalog kami.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="relative z-10 flex flex-col items-center text-center group">
+              <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-primary font-black text-xl mb-6 shadow-md group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                2
+              </div>
+              <h3 className="text-lg font-bold text-slate-950 dark:text-white mb-2">Tentukan Tanggal & Lokasi</h3>
+              <p className="text-slate-500 text-xs max-w-[200px] leading-relaxed">
+                Pilih tanggal mulai, tanggal berakhir, dan di mana Anda ingin kendaraan diserahterimakan.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="relative z-10 flex flex-col items-center text-center group">
+              <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-primary font-black text-xl mb-6 shadow-md group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                3
+              </div>
+              <h3 className="text-lg font-bold text-slate-950 dark:text-white mb-2">Isi Data & Verifikasi</h3>
+              <p className="text-slate-500 text-xs max-w-[200px] leading-relaxed">
+                Isi formulir identitas singkat, lampirkan dokumen pendukung (KTP/SIM) dan tunggu verifikasi cepat admin kami.
+              </p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="relative z-10 flex flex-col items-center text-center group">
+              <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-primary font-black text-xl mb-6 shadow-md group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                4
+              </div>
+              <h3 className="text-lg font-bold text-slate-950 dark:text-white mb-2">Mulai Perjalanan</h3>
+              <p className="text-slate-500 text-xs max-w-[200px] leading-relaxed">
+                Lakukan pembayaran aman, serah terima kunci di lokasi yang disepakati, dan mulailah perjalanan Anda dengan riang gembira!
+              </p>
+            </div>
+
+          </div>
+
+          {/* Quick FAQ/Tip Callout */}
+          <div className="mt-16 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-3xl p-6 flex flex-col sm:flex-row items-center gap-4 justify-between max-w-4xl mx-auto shadow-sm">
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-accent text-3xl">lightbulb</span>
+              <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
+                <strong>Tips Tambahan:</strong> Persiapkan foto KTP dan SIM A Anda untuk mempercepat proses persetujuan verifikasi rental Anda.
+              </p>
+            </div>
+            <a href="#fleet" className="text-primary hover:text-blue-700 font-bold text-xs flex items-center gap-1 shrink-0">
+              Lihat Armada Sekarang
+              <span className="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6. TESTIMONI (TESTIMONIALS SECTION) */}
+      <section className="py-24 md:py-36 bg-white dark:bg-slate-900" id="blog">
+        {/* We reuse this section to satisfy "blog" link or showcase community updates + testimonials */}
+        <div className="max-w-[1280px] w-full mx-auto px-4 md:px-8 lg:px-16">
+          
+          <div className="text-center max-w-2xl mx-auto mb-20">
+            <h2 className="text-xs font-black text-primary uppercase tracking-widest mb-3">Testimoni</h2>
+            <p className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
+              Apa Kata Mereka Tentang Kami
+            </p>
+            <p className="text-slate-500 text-sm">
+              Ulasan asli dan tepercaya dari ratusan pelanggan setia yang telah merasakan pelayanan terbaik dari ArmadaKita.
+            </p>
+          </div>
+
+          {/* Testimonials Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            {/* Testimonial 1 */}
+            <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+              <span className="material-symbols-outlined text-slate-200 dark:text-slate-850 text-6xl absolute top-6 right-6 pointer-events-none select-none">format_quote</span>
+              <div className="space-y-4">
+                {/* Rating */}
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="material-symbols-outlined text-accent text-sm">star</span>
+                  ))}
+                </div>
+                <p className="text-slate-600 dark:text-slate-300 text-xs italic leading-relaxed relative z-10">
+                  &quot;Sewa Toyota Alphard di ArmadaKita untuk keperluan penjemputan tamu VIP kantor. Mobil bersih berkilau, interior wangi, dan supirnya sangat sopan serta hafal jalan alternatif menghindari kemacetan. Pelayanan bintang 5!&quot;
+                </p>
+              </div>
+              <div className="flex items-center gap-3 mt-8 pt-4 border-t border-slate-100 dark:border-slate-800/80">
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary text-xs">
+                  AH
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-950 dark:text-white text-xs">Aditya Hermawan</h4>
+                  <p className="text-slate-500 text-[10px]">Manager Operasional, Jakarta</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 2 */}
+            <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+              <span className="material-symbols-outlined text-slate-200 dark:text-slate-850 text-6xl absolute top-6 right-6 pointer-events-none select-none">format_quote</span>
+              <div className="space-y-4">
+                {/* Rating */}
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="material-symbols-outlined text-accent text-sm">star</span>
+                  ))}
+                </div>
+                <p className="text-slate-600 dark:text-slate-300 text-xs italic leading-relaxed relative z-10">
+                  &quot;Saya memilih rental lepas kunci Innova Zenix untuk liburan keluarga di Bali selama 4 hari. Proses verifikasinya sangat cepat dan praktis via WA. Mobil diantar tepat waktu ke Bandara Ngurah Rai. Sangat recommended!&quot;
+                </p>
+              </div>
+              <div className="flex items-center gap-3 mt-8 pt-4 border-t border-slate-100 dark:border-slate-800/80">
+                <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center font-bold text-accent text-xs">
+                  SP
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-950 dark:text-white text-xs">Siti Pertiwi</h4>
+                  <p className="text-slate-500 text-[10px]">Ibu Rumah Tangga, Surabaya</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 3 */}
+            <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+              <span className="material-symbols-outlined text-slate-200 dark:text-slate-850 text-6xl absolute top-6 right-6 pointer-events-none select-none">format_quote</span>
+              <div className="space-y-4">
+                {/* Rating */}
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="material-symbols-outlined text-accent text-sm">star</span>
+                  ))}
+                </div>
+                <p className="text-slate-600 dark:text-slate-300 text-xs italic leading-relaxed relative z-10">
+                  &quot;Sangat puas dengan layanan tanggap darurat 24/7-nya. Saat ban Pajero kami terkena paku di tol Cipularang tengah malam, tim teknis langsung datang membantu dalam waktu 30 menit saja. Luar biasa tanggap!&quot;
+                </p>
+              </div>
+              <div className="flex items-center gap-3 mt-8 pt-4 border-t border-slate-100 dark:border-slate-800/80">
+                <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center font-bold text-purple-600 text-xs">
+                  BN
+                </div>
+                <div>
+                  <h4 className="font-bold text-slate-950 dark:text-white text-xs">Bambang Nugroho</h4>
+                  <p className="text-slate-500 text-[10px]">Wiraswasta, Bandung</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 7. CTA BOOKING (CTA BANNER) */}
+      <section className="py-20 bg-slate-950 text-white relative overflow-hidden">
+        {/* Glow decoration */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div className="relative z-10 max-w-[1280px] w-full mx-auto px-4 md:px-8 lg:px-16 text-center space-y-8">
+          <h2 className="text-3xl md:text-5xl font-black tracking-tight leading-tight max-w-3xl mx-auto">
+            Siap Memulai Perjalanan Indah Anda Bersama Kami?
+          </h2>
+          <p className="text-slate-400 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+            Dapatkan diskon promo khusus pelanggan baru hingga 15% untuk penyewaan di atas 3 hari. Hubungi CS kami atau pesan langsung sekarang juga.
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-4 pt-4">
+            <a
+              href="#fleet"
+              className="bg-primary hover:bg-blue-700 text-white font-bold px-8 py-3.5 rounded-xl text-sm transition-all active:scale-95 shadow-lg shadow-blue-500/10"
+            >
+              Pesan Sekarang
+            </a>
+            <a
+              href="https://wa.me/628123456789?text=Halo%20ArmadaKita,%20saya%20tertarik%20untuk%20sewa%20mobil%20di%20sini."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-slate-900 hover:bg-slate-850 text-white border border-slate-800 font-bold px-8 py-3.5 rounded-xl text-sm transition-all active:scale-95 flex items-center gap-2"
+            >
+              <span className="material-symbols-outlined text-green-500 text-lg">chat</span>
+              Hubungi CS WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. INTERACTIVE BOOKING MODAL */}
+      {selectedCar && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
+          <div 
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl animate-scale-up"
+            role="dialog"
+            aria-modal="true"
+          >
+            {/* Header */}
+            <div className={`p-6 bg-gradient-to-br ${selectedCar.imageBg} text-white relative`}>
+              <button
+                onClick={() => setSelectedCar(null)}
+                className="absolute top-4 right-4 bg-black/30 hover:bg-black/50 text-white rounded-full w-8 h-8 flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Tutup"
+              >
+                <span className="material-symbols-outlined text-sm">close</span>
+              </button>
+              <span className="text-[10px] font-bold uppercase tracking-widest bg-white/20 px-2 py-0.5 rounded">
+                {selectedCar.type}
+              </span>
+              <h3 className="text-2xl font-black mt-2">{selectedCar.name}</h3>
+              <p className="text-white/80 text-xs mt-1">Sewa Premium Terjamin</p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleConfirmBooking} className="p-6 space-y-4">
+              <div className="grid grid-cols-2 gap-4 text-xs font-semibold text-slate-500 dark:text-slate-400">
+                <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/40 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
+                  <span className="material-symbols-outlined text-primary text-base">group</span>
+                  {selectedCar.seats} Kursi
+                </div>
+                <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/40 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
+                  <span className="material-symbols-outlined text-primary text-base">settings_input_hdmi</span>
+                  {selectedCar.transmission}
+                </div>
+                <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/40 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800 col-span-2">
+                  <span className="material-symbols-outlined text-primary text-base">local_gas_station</span>
+                  Bahan Bakar: {selectedCar.fuel}
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Metode Layanan</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setDriverOption("lepas-kunci")}
+                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                      driverOption === "lepas-kunci"
+                        ? "bg-primary/10 border-primary text-primary"
+                        : "border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
+                    }`}
+                  >
+                    🔑 Lepas Kunci
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDriverOption("dengan-sopir")}
+                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                      driverOption === "dengan-sopir"
+                        ? "bg-primary/10 border-primary text-primary"
+                        : "border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
+                    }`}
+                  >
+                    👤 Dengan Sopir
+                  </button>
+                </div>
+              </div>
+
+              {/* Input Nama */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Nama Lengkap</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Masukkan nama lengkap Anda"
+                  value={bookingName}
+                  onChange={(e) => setBookingName(e.target.value)}
+                  className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                />
+              </div>
+
+              {/* Input Nomor Handphone */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">No. WhatsApp</label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="Contoh: 08123456789"
+                  value={bookingPhone}
+                  onChange={(e) => setBookingPhone(e.target.value)}
+                  className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                />
+              </div>
+
+              {/* Price Breakdown */}
+              <div className="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs space-y-1">
+                <div className="flex justify-between">
+                  <span>Sewa Harian ({selectedCar.name})</span>
+                  <span className="font-semibold text-slate-900 dark:text-white">{formatRupiah(selectedCar.price)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Supir &amp; Bensin</span>
+                  <span className="font-semibold text-slate-900 dark:text-white">
+                    {driverOption === "dengan-sopir" ? "Hubungi CS (Ada Biaya)" : "Rp 0 (Lepas Kunci)"}
+                  </span>
+                </div>
+                <hr className="border-slate-100 dark:border-slate-800 my-1.5" />
+                <div className="flex justify-between font-bold text-sm text-slate-950 dark:text-white">
+                  <span>Total Harga Sewa</span>
+                  <span className="text-primary">{formatRupiah(selectedCar.price)} /hari</span>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="grid grid-cols-2 gap-4 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedCar(null)}
+                  className="w-full border border-slate-200 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-350 font-bold py-3 rounded-xl text-xs transition-all active:scale-95 cursor-pointer"
+                >
+                  Kembali
+                </button>
+                <button
+                  type="submit"
+                  disabled={bookingSuccess}
+                  className="w-full bg-primary hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs transition-all active:scale-95 cursor-pointer shadow-lg shadow-blue-500/10 flex items-center justify-center gap-1.5"
+                >
+                  {bookingSuccess ? (
+                    <>
+                      <span className="material-symbols-outlined text-sm animate-spin">sync</span>
+                      Mengalihkan...
+                    </>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-sm">send</span>
+                      Kirim Ke WA
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

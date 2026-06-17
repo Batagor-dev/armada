@@ -20,8 +20,8 @@ const dancingScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Veyora - Luxury Destinations",
-  description: "Experience the best destinations with Veyora.",
+  title: "ArmadaKita - Sewa Mobil & Kendaraan Premium Terpercaya",
+  description: "Penyedia layanan sewa mobil terpercaya dengan koleksi armada eksklusif untuk kenyamanan perjalanan Anda.",
 };
 
 export default function RootLayout({
@@ -31,10 +31,16 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="id"
       className={`${geistSans.variable} ${geistMono.variable} ${dancingScript.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+        />
+      </head>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />
