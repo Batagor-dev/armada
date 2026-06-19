@@ -1,8 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 
 export default function Navbar() {
+
+  const pathname = usePathname();
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
@@ -31,29 +37,20 @@ export default function Navbar() {
   }, []);
 
   const menuItems = [
-    { name: "Home", href: "#home", id: "home" },
-    { name: "Daftar Kendaraan", href: "#fleet", id: "fleet" },
-    { name: "Tentang Kami", href: "#about", id: "about" },
-    { name: "Panduan", href: "#tutorial", id: "tutorial" },
-    { name: "Blog", href: "#blog", id: "blog" },
+    { name: "Home", href: "/",},
+    { name: "Daftar Kendaraan", href: "/vehicles", },
+    { name: "Tentang Kami", href: "/about"  },
+    { name: "Panduan", href: "/tutorial" },
+    { name: "Berita", href: "/blog"},
   ];
 
   /* Bottom Nav items for mobile - limited to 4 for best UX */
   const bottomNavItems = [
-    { name: "Home", href: "#home", id: "home", icon: "home" },
-    { name: "Armada", href: "#fleet", id: "fleet", icon: "directions_car" },
-    { name: "Booking", href: "#tutorial", id: "tutorial", icon: "event_available" },
-    { name: "Ulasan", href: "#blog", id: "blog", icon: "forum" },
+    { name: "Home", href: "/", icon: "home" },
+    { name: "Armada", href: "/vehicles", icon: "directions_car" },
+    { name: "Booking", href: "/tutorial", icon: "event_available" },
+    { name: "Ulasan", href: "/blog", id: "blog", icon: "forum" },
   ];
-
-  const scrollToSection = (href: string) => {
-    setMobileMenuOpen(false);
-    const id = href.replace("#", "");
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
 
   return (
     <>
@@ -67,31 +64,29 @@ export default function Navbar() {
       >
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-16 flex items-center justify-between">
           {/* Logo */}
-          <a
-            href="#home"
-            onClick={(e) => { e.preventDefault(); scrollToSection("#home"); }}
+          <Link
+            href="/"
             className="font-display text-2xl font-extrabold tracking-tight cursor-pointer active:scale-95 transition-transform flex items-center gap-0.5"
           >
             <span className="text-primary dark:text-white">Armada</span>
             <span className="premium-gradient-text">Kita</span>
-          </a>
+          </Link>
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-1">
             {menuItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
-                className={`text-sm font-semibold transition-all duration-200 px-4 py-2 rounded-xl relative tap-highlight ${
-                  activeSection === item.id
-                    ? "text-primary dark:text-accent bg-primary/5 dark:bg-accent/5"
-                    : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent hover:bg-slate-50 dark:hover:bg-slate-800/50"
-                }`}
-              >
-                {item.name}
-              </a>
-            ))}
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`text-sm font-semibold transition-all duration-200 px-4 py-2 rounded-xl ${
+                    pathname === item.href
+                      ? "text-primary dark:text-accent bg-primary/5 dark:bg-accent/5"
+                      : "text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-accent hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
           </div>
 
           {/* Right actions */}
@@ -101,7 +96,6 @@ export default function Navbar() {
             </button>
             <a
               href="#fleet"
-              onClick={(e) => { e.preventDefault(); scrollToSection("#fleet"); }}
               className="bg-gradient-to-r from-primary to-[#2A4F7A] text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 active:scale-95"
             >
               Sewa Sekarang
@@ -127,9 +121,8 @@ export default function Navbar() {
               <a
                 key={item.name}
                 href={item.href}
-                onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
                 className={`font-semibold text-base px-4 py-3 rounded-xl transition-all tap-highlight ${
-                  activeSection === item.id
+                  pathname === item.href
                     ? "text-primary dark:text-accent bg-primary/5 dark:bg-accent/10"
                     : "text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50"
                 }`}
@@ -147,7 +140,6 @@ export default function Navbar() {
               </button>
               <a
                 href="#fleet"
-                onClick={(e) => { e.preventDefault(); scrollToSection("#fleet"); }}
                 className="w-full text-center bg-gradient-to-r from-primary to-[#2A4F7A] text-white py-3 rounded-xl font-bold transition-all active:scale-95"
               >
                 Sewa Sekarang

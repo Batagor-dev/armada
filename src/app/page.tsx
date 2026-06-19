@@ -1,133 +1,139 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import VehicleCard from "../../components/shared/vehicle-card";
 
 // Mock data for our exclusive fleet
 const VEHICLES_DATABASE = [
   {
     id: 1,
-    name: "Toyota Alphard VIP",
-    type: "Luxury",
-    imageText: "👑 ALPHARD",
-    imageBg: "from-slate-700 to-slate-900",
-    price: 2400000,
-    seats: 7,
-    transmission: "Otomatis",
+    name: "Nissan GT-R",
+    model: "R34",
+    type: "Mobil",
+    year: 2002,
+    mileage: 85000,
+    transmission: "Manual",
     fuel: "Bensin",
-    locations: ["Jakarta", "Bali", "Surabaya"],
-    popular: true,
-    rating: 4.9,
-    description: "Kenyamanan kelas satu dengan kabin super mewah dan suspensi lembut, sangat cocok untuk perjalanan bisnis maupun keluarga terhormat.",
+    seats: 4,
+    color: "Blue",
+    daily_price: 1500000,
+    img: "/assets/images/vehicles/nisan-gtr.jpg",
   },
   {
     id: 2,
-    name: "Mitsubishi Pajero Sport",
-    type: "SUV",
-    imageText: "🏔️ PAJERO",
-    imageBg: "from-blue-800 to-slate-950",
-    price: 1100000,
-    seats: 7,
-    transmission: "Otomatis",
-    fuel: "Diesel",
-    locations: ["Jakarta", "Bandung", "Surabaya", "Malang"],
-    popular: true,
-    rating: 4.8,
-    description: "SUV tangguh yang siap melibas segala medan dengan kenyamanan premium dan kabin lapang untuk petualangan Anda.",
+    name: "Nissan Silvia S15",
+    model: "S15",
+    type: "Mobil",
+    year: 2001,
+    mileage: 78000,
+    transmission: "Manual",
+    fuel: "Bensin",
+    seats: 4,
+    color: "White",
+    daily_price: 1200000,
+    img: "/assets/images/vehicles/nisan-silvia.jpg",
   },
   {
     id: 3,
-    name: "Honda Civic Turbo RS",
-    type: "Sedan",
-    imageText: "⚡ CIVIC",
-    imageBg: "from-red-800 to-slate-900",
-    price: 1400000,
-    seats: 5,
-    transmission: "Otomatis",
+    name: "Toyota Fortuner",
+    model: "GR Sport",
+    type: "Mobil",
+    year: 2024,
+    mileage: 12500,
+    transmission: "Automatic",
     fuel: "Bensin",
-    locations: ["Jakarta", "Bandung"],
-    popular: false,
-    rating: 4.7,
-    description: "Tampilan sporty dan performa mesin turbo bertenaga tinggi untuk Anda yang menyukai sensasi berkendara dinamis di perkotaan.",
+    seats: 7,
+    color: "Black",
+    daily_price: 1750000,
+    img: "/assets/images/vehicles/fotuner.jpg",
   },
   {
     id: 4,
-    name: "Toyota Innova Zenix Hybrid",
-    type: "MPV",
-    imageText: "🔋 ZENIX",
-    imageBg: "from-emerald-800 to-slate-900",
-    price: 850000,
+    name: "Toyota Avanza",
+    model: "1.5 G CVT",
+    type: "Mobil",
+    year: 2023,
+    mileage: 28500,
+    transmission: "Automatic",
+    fuel: "Bensin",
     seats: 7,
-    transmission: "Otomatis",
-    fuel: "Hybrid",
-    locations: ["Jakarta", "Bandung", "Surabaya", "Bali", "Malang"],
-    popular: true,
-    rating: 4.9,
-    description: "Teknologi hybrid modern yang super hemat bahan bakar namun tetap bertenaga dengan ruang kabin luas dan teknologi mutakhir.",
+    color: "White",
+    daily_price: 450000,
+    img: "/assets/images/vehicles/avanza.jpg",
   },
   {
     id: 5,
-    name: "Hyundai Ioniq 5 Electric",
-    type: "Luxury",
-    imageText: "⚡ IONIQ 5",
-    imageBg: "from-cyan-700 to-slate-900",
-    price: 1800000,
+    name: "Honda Civic Type R",
+    model: "FL5",
+    type: "Mobil",
+    year: 2024,
+    mileage: 8500,
+    transmission: "Manual",
+    fuel: "Bensin",
     seats: 5,
-    transmission: "Otomatis",
-    fuel: "Listrik",
-    locations: ["Jakarta", "Bali"],
-    popular: false,
-    rating: 4.8,
-    description: "Kendaraan listrik futuristik dengan desain ikonik dan akselerasi instan. Bersih lingkungan tanpa kompromi pada kemewahan.",
+    color: "Red",
+    daily_price: 2500000,
+    img: "/assets/images/vehicles/civic.jpg",
   },
   {
     id: 6,
-    name: "Daihatsu Rocky Turbo",
-    type: "SUV",
-    imageText: "⛰️ ROCKY",
-    imageBg: "from-amber-700 to-slate-900",
-    price: 550000,
-    seats: 5,
+    name: "Honda CBR250R",
+    model: "CBR250R",
+    type: "Motor",
+    year: 2022,
+    mileage: 18000,
     transmission: "Manual",
     fuel: "Bensin",
-    locations: ["Surabaya", "Malang", "Bandung"],
-    popular: false,
-    rating: 4.6,
-    description: "Crossover kompak yang gesit dengan mesin turbo efisien. Sangat lincah menembus kemacetan kota atau jalanan menanjak.",
+    seats: 2,
+    color: "Red",
+    daily_price: 250000,
+    img: "/assets/images/vehicles/cbr250.jpg",
   },
   {
     id: 7,
-    name: "Toyota Avanza Veloz",
-    type: "MPV",
-    imageText: "🚗 VELOZ",
-    imageBg: "from-indigo-800 to-slate-900",
-    price: 450000,
-    seats: 7,
-    transmission: "Otomatis",
+    name: "Honda Vario 160",
+    model: "CBS",
+    type: "Motor",
+    year: 2024,
+    mileage: 5200,
+    transmission: "Automatic",
     fuel: "Bensin",
-    locations: ["Jakarta", "Bandung", "Surabaya", "Malang", "Bali"],
-    popular: false,
-    rating: 4.7,
-    description: "Mobil keluarga sejuta umat berdesain modern dengan fitur keselamatan terintegrasi lengkap dan suspensi yang nyaman.",
+    seats: 2,
+    color: "Black",
+    daily_price: 175000,
+    img: "/assets/images/vehicles/vario.jpg",
   },
   {
     id: 8,
-    name: "Mercedes Benz C-Class",
-    type: "Sedan",
-    imageText: "⭐ C-CLASS",
-    imageBg: "from-neutral-700 to-slate-950",
-    price: 3200000,
-    seats: 5,
-    transmission: "Otomatis",
+    name: "Yamaha XMAX 250",
+    model: "Connected",
+    type: "Motor",
+    year: 2024,
+    mileage: 3800,
+    transmission: "Automatic",
     fuel: "Bensin",
-    locations: ["Jakarta", "Bali"],
-    popular: true,
-    rating: 4.9,
-    description: "Definisi kemewahan berkendara dengan kemudi presisi, fitur asisten mengemudi modern, dan prestise tak tertandingi.",
-  }
+    seats: 2,
+    color: "Black Matte",
+    daily_price: 300000,
+    img: "/assets/images/vehicles/xnmax.jpg",
+  },
+  {
+    id: 9,
+    name: "Vespa Primavera",
+    model: "150 i-get",
+    type: "Motor",
+    year: 2024,
+    mileage: 4200,
+    transmission: "Automatic",
+    fuel: "Bensin",
+    seats: 2,
+    color: "Green",
+    daily_price: 275000,
+    img: "/assets/images/vehicles/vespa.jpg",
+  },
 ];
 
-const LOCATIONS = ["Jakarta", "Bandung", "Surabaya", "Bali", "Malang"];
-const VEHICLE_TYPES = ["Semua Tipe", "SUV", "MPV", "Sedan", "Luxury"];
+const VEHICLE_TYPES = ["Semua Tipe", "Mobil", "Motor"];
 
 export default function Home() {
   // Search state
@@ -171,6 +177,11 @@ export default function Home() {
     }
   };
 
+  const filteredVehicles = VEHICLES_DATABASE.filter((vehicle) => {
+    if (activeTab === "Semua Tipe") return true;
+    return vehicle.type === activeTab;
+  });
+
   // Reset filter search
   const handleResetSearch = () => {
     setSelectedLocation("");
@@ -181,22 +192,6 @@ export default function Home() {
     setActiveTab("Semua Tipe");
   };
 
-  // Filter vehicles based on active tab and search query
-  const filteredVehicles = useMemo(() => {
-    return VEHICLES_DATABASE.filter((car) => {
-      // 1. Check tab filter
-      const matchesTab = activeTab === "Semua Tipe" || car.type === activeTab;
-      
-      // 2. Check search filter (only if search button was clicked)
-      if (searchApplied) {
-        const matchesLocation = !searchQuery.location || car.locations.includes(searchQuery.location);
-        const matchesSearchType = searchQuery.type === "Semua Tipe" || car.type === searchQuery.type;
-        return matchesTab && matchesLocation && matchesSearchType;
-      }
-
-      return matchesTab;
-    });
-  }, [activeTab, searchApplied, searchQuery]);
 
   // Format currency helper
   const formatRupiah = (number: number) => {
@@ -310,153 +305,83 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. KENDARAAN UNGGULAN (FLEET SECTION) */}
-      <section className="py-24 md:py-36 bg-slate-50 dark:bg-slate-950/20" id="fleet">
-        <div className="max-w-[1280px] w-full mx-auto px-4 md:px-8 lg:px-16">
-          
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-xs font-black text-primary uppercase tracking-widest mb-3">Katalog Kendaraan</h2>
-            <p className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
-              Kendaraan Unggulan Kami
-            </p>
-            <p className="text-slate-500 text-sm">
-              Temukan pilihan kendaraan terbaik yang siap menemani perjalanan Anda. Dari kendaraan mewah, keluarga, hingga petualangan tangguh.
-            </p>
+      {/* 2. KENDARAAN UNGGULAN (FLEET SECTION) */}
+      <section className="bg-white dark:bg-slate-950" id="fleet">
+        <div className="max-w-[1280px] w-full mx-auto px-4 ">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-center gap-5 mb-10 text-center">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
+                Kendaraan
+                <span className="block premium-gradient-text">Terlaris Minggu Ini</span>
+              </h2>
+              
+            </div>
           </div>
 
-          {/* Tabs Filter */}
-          <div className="flex flex-wrap justify-center items-center gap-2 mb-12">
-            {VEHICLE_TYPES.map((type) => (
-              <button
-                key={type}
-                onClick={() => setActiveTab(type)}
-                className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all duration-300 cursor-pointer ${
-                  activeTab === type
-                    ? "bg-primary text-white shadow-md shadow-blue-500/20"
-                    : "bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-350 dark:hover:border-slate-700"
-                }`}
-              >
-                {type}
-              </button>
-            ))}
-
-            {searchApplied && (
-              <button
-                onClick={handleResetSearch}
-                className="px-4 py-2.5 rounded-full text-xs font-bold text-red-500 hover:text-red-700 border border-red-500/20 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all flex items-center gap-1 cursor-pointer"
-              >
-                <span className="material-symbols-outlined text-xs">close</span>
-                Reset Cari: &quot;{searchQuery.location || "Semua Kota"}&quot;
-              </button>
-            )}
-          </div>
-
-          {/* Cards Grid */}
-          {filteredVehicles.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {filteredVehicles.map((car) => (
-                <div
-                  key={car.id}
-                  className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-850 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group"
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-center gap-4 py-4 mb-8">
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {VEHICLE_TYPES.map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setActiveTab(type)}
+                  className={`px-4 py-2 rounded-md text-[10px] font-black uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                    activeTab === type
+                      ? "bg-[var(--primary)] text-white shadow-md shadow-[rgba(30,58,95,0.18)]"
+                      : "bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 text-gray-600 dark:text-slate-400 hover:border-[var(--secondary)] hover:text-[var(--primary)] dark:hover:text-white"
+                  }`}
                 >
-                  {/* Visual Image Area (using nice CSS with gradient and branding instead of placeholder links) */}
-                  <div className={`h-48 bg-gradient-to-br ${car.imageBg} relative flex items-center justify-center select-none overflow-hidden`}>
-                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <span className="text-white font-black text-2xl tracking-widest drop-shadow-md transform group-hover:scale-110 transition-transform duration-500">
-                      {car.imageText}
-                    </span>
-                    
-                    {/* Tags */}
-                    <div className="absolute top-4 left-4 flex gap-2">
-                      <span className="bg-slate-900/80 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                        {car.type}
-                      </span>
-                      {car.popular && (
-                        <span className="bg-accent text-slate-900 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-0.5">
-                          <span className="material-symbols-outlined text-[10px]">local_fire_department</span>
-                          Terlaris
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Rating */}
-                    <div className="absolute top-4 right-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md text-slate-900 dark:text-white text-[10px] font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                      <span className="material-symbols-outlined text-accent text-xs">star</span>
-                      {car.rating}
-                    </div>
-                  </div>
-
-                  {/* Body Content */}
-                  <div className="p-6">
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
-                      {car.name}
-                    </h3>
-                    
-                    {/* Location Badge */}
-                    <div className="mt-2 flex flex-wrap gap-1">
-                      {car.locations.map((loc) => (
-                        <span key={loc} className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-semibold px-2 py-0.5 rounded">
-                          📍 {loc}
-                        </span>
-                      ))}
-                    </div>
-
-                    <p className="text-slate-500 text-xs mt-3 line-clamp-2 h-8 leading-relaxed">
-                      {car.description}
-                    </p>
-
-                    {/* Specs Grid */}
-                    <div className="grid grid-cols-3 gap-2 border-t border-b border-slate-100 dark:border-slate-800/80 my-4 py-3 text-slate-500 dark:text-slate-400">
-                      <div className="flex flex-col items-center justify-center text-center">
-                        <span className="material-symbols-outlined text-slate-400 text-lg mb-1">group</span>
-                        <span className="text-[10px] font-bold">{car.seats} Kursi</span>
-                      </div>
-                      <div className="flex flex-col items-center justify-center text-center border-l border-r border-slate-100 dark:border-slate-800/80">
-                        <span className="material-symbols-outlined text-slate-400 text-lg mb-1">settings_input_hdmi</span>
-                        <span className="text-[10px] font-bold">{car.transmission}</span>
-                      </div>
-                      <div className="flex flex-col items-center justify-center text-center">
-                        <span className="material-symbols-outlined text-slate-400 text-lg mb-1">local_gas_station</span>
-                        <span className="text-[10px] font-bold">{car.fuel}</span>
-                      </div>
-                    </div>
-
-                    {/* Pricing & CTA */}
-                    <div className="flex items-center justify-between pt-1">
-                      <div>
-                        <span className="text-slate-400 text-[10px] block font-semibold uppercase tracking-wider">Mulai Dari</span>
-                        <span className="text-base font-black text-slate-900 dark:text-white">
-                          {formatRupiah(car.price)}
-                          <span className="text-slate-500 text-[10px] font-medium">/hari</span>
-                        </span>
-                      </div>
-                      <button
-                        onClick={() => setSelectedCar(car)}
-                        className="bg-primary hover:bg-blue-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-md shadow-blue-500/10"
-                      >
-                        Sewa Sekarang
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                  {type}
+                </button>
               ))}
             </div>
-          ) : (
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center max-w-xl mx-auto">
-              <span className="material-symbols-outlined text-slate-300 text-6xl mb-4">search_off</span>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Armada Tidak Ditemukan</h3>
-              <p className="text-slate-500 text-sm mb-6">
-                Maaf, tidak ada armada tipe &quot;{activeTab}&quot; yang tersedia untuk lokasi yang Anda cari saat ini. Silakan coba pilih kota atau tipe kendaraan yang lain.
-              </p>
-              <button
-                onClick={handleResetSearch}
-                className="bg-primary hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition-all cursor-pointer"
-              >
-                Lihat Semua Armada
-              </button>
-            </div>
-          )}
+          </div>
 
+          {filteredVehicles.length > 0 ? (
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        {filteredVehicles.slice(0, 4).map((car) => (
+          <VehicleCard
+            key={car.id}
+            vehicle={car}
+            formatPrice={formatRupiah}
+            onDetail={setSelectedCar}
+          />
+        ))}
+      </div>
+      ) : (
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center max-w-xl mx-auto">
+        <span className="material-symbols-outlined text-slate-300 text-6xl mb-4">
+          search_off
+        </span>
+
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+          Armada Tidak Ditemukan
+        </h3>
+
+        <p className="text-slate-500 text-sm mb-6">
+          Maaf, tidak ada armada tipe &quot;{activeTab}&quot; yang tersedia untuk lokasi yang
+          Anda cari saat ini.
+        </p>
+
+        <button
+          onClick={handleResetSearch}
+          className="bg-primary hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition-all cursor-pointer"
+        >
+          Lihat Semua Armada
+        </button>
+      </div>
+    )}
+
+      <div className="flex justify-center mt-12">
+            <a
+              href="/armada"
+              className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-[var(--primary)] text-white font-bold text-sm tracking-wide hover:scale-105 transition-all duration-300 shadow-lg"
+            >
+              Lihat Semua Armada
+              <span className="material-symbols-outlined text-lg transition-transform duration-300 group-hover:translate-x-1">
+                arrow_forward
+              </span>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -530,7 +455,7 @@ export default function Home() {
       </section>
 
       {/* 5. CARA BOOKING (TUTORIAL SECTION) */}
-      <section className="py-24 md:py-36 bg-slate-50 dark:bg-slate-950/20" id="tutorial">
+      <section className=" bg-slate-50 dark:bg-slate-950/20" id="tutorial">
         <div className="max-w-[1280px] w-full mx-auto px-4 md:px-8 lg:px-16">
           
           <div className="text-center max-w-2xl mx-auto mb-20">
@@ -547,7 +472,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
             
             {/* Horizontal progress line for desktop */}
-            <div className="hidden md:block absolute top-16 left-1/8 right-1/8 h-0.5 bg-slate-200 dark:bg-slate-800 z-0"></div>
+            <div className="hidden md:block absolute top-10 left-1/8 right-1/8 h-0.5 bg-slate-200 dark:bg-slate-800 z-0"></div>
 
             {/* Step 1 */}
             <div className="relative z-10 flex flex-col items-center text-center group">
@@ -603,10 +528,6 @@ export default function Home() {
                 <strong>Tips Tambahan:</strong> Persiapkan foto KTP dan SIM A Anda untuk mempercepat proses persetujuan verifikasi rental Anda.
               </p>
             </div>
-            <a href="#fleet" className="text-primary hover:text-blue-700 font-bold text-xs flex items-center gap-1 shrink-0">
-              Lihat Armada Sekarang
-              <span className="material-symbols-outlined text-sm">arrow_forward</span>
-            </a>
           </div>
 
         </div>
@@ -741,153 +662,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* 8. INTERACTIVE BOOKING MODAL */}
-      {selectedCar && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in">
-          <div 
-            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl animate-scale-up"
-            role="dialog"
-            aria-modal="true"
-          >
-            {/* Header */}
-            <div className={`p-6 bg-gradient-to-br ${selectedCar.imageBg} text-white relative`}>
-              <button
-                onClick={() => setSelectedCar(null)}
-                className="absolute top-4 right-4 bg-black/30 hover:bg-black/50 text-white rounded-full w-8 h-8 flex items-center justify-center transition-colors cursor-pointer"
-                aria-label="Tutup"
-              >
-                <span className="material-symbols-outlined text-sm">close</span>
-              </button>
-              <span className="text-[10px] font-bold uppercase tracking-widest bg-white/20 px-2 py-0.5 rounded">
-                {selectedCar.type}
-              </span>
-              <h3 className="text-2xl font-black mt-2">{selectedCar.name}</h3>
-              <p className="text-white/80 text-xs mt-1">Sewa Premium Terjamin</p>
-            </div>
-
-            {/* Form */}
-            <form onSubmit={handleConfirmBooking} className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4 text-xs font-semibold text-slate-500 dark:text-slate-400">
-                <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/40 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
-                  <span className="material-symbols-outlined text-primary text-base">group</span>
-                  {selectedCar.seats} Kursi
-                </div>
-                <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/40 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
-                  <span className="material-symbols-outlined text-primary text-base">settings_input_hdmi</span>
-                  {selectedCar.transmission}
-                </div>
-                <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/40 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800 col-span-2">
-                  <span className="material-symbols-outlined text-primary text-base">local_gas_station</span>
-                  Bahan Bakar: {selectedCar.fuel}
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Metode Layanan</label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setDriverOption("lepas-kunci")}
-                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-                      driverOption === "lepas-kunci"
-                        ? "bg-primary/10 border-primary text-primary"
-                        : "border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
-                    }`}
-                  >
-                    🔑 Lepas Kunci
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setDriverOption("dengan-sopir")}
-                    className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-                      driverOption === "dengan-sopir"
-                        ? "bg-primary/10 border-primary text-primary"
-                        : "border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400"
-                    }`}
-                  >
-                    👤 Dengan Sopir
-                  </button>
-                </div>
-              </div>
-
-              {/* Input Nama */}
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Nama Lengkap</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Masukkan nama lengkap Anda"
-                  value={bookingName}
-                  onChange={(e) => setBookingName(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                />
-              </div>
-
-              {/* Input Nomor Handphone */}
-              <div className="space-y-1">
-                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">No. WhatsApp</label>
-                <input
-                  type="tel"
-                  required
-                  placeholder="Contoh: 08123456789"
-                  value={bookingPhone}
-                  onChange={(e) => setBookingPhone(e.target.value)}
-                  className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 rounded-xl px-4 py-2.5 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                />
-              </div>
-
-              {/* Price Breakdown */}
-              <div className="bg-slate-50 dark:bg-slate-800/30 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs space-y-1">
-                <div className="flex justify-between">
-                  <span>Sewa Harian ({selectedCar.name})</span>
-                  <span className="font-semibold text-slate-900 dark:text-white">{formatRupiah(selectedCar.price)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Supir &amp; Bensin</span>
-                  <span className="font-semibold text-slate-900 dark:text-white">
-                    {driverOption === "dengan-sopir" ? "Hubungi CS (Ada Biaya)" : "Rp 0 (Lepas Kunci)"}
-                  </span>
-                </div>
-                <hr className="border-slate-100 dark:border-slate-800 my-1.5" />
-                <div className="flex justify-between font-bold text-sm text-slate-950 dark:text-white">
-                  <span>Total Harga Sewa</span>
-                  <span className="text-primary">{formatRupiah(selectedCar.price)} /hari</span>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="grid grid-cols-2 gap-4 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setSelectedCar(null)}
-                  className="w-full border border-slate-200 dark:border-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-350 font-bold py-3 rounded-xl text-xs transition-all active:scale-95 cursor-pointer"
-                >
-                  Kembali
-                </button>
-                <button
-                  type="submit"
-                  disabled={bookingSuccess}
-                  className="w-full bg-primary hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs transition-all active:scale-95 cursor-pointer shadow-lg shadow-blue-500/10 flex items-center justify-center gap-1.5"
-                >
-                  {bookingSuccess ? (
-                    <>
-                      <span className="material-symbols-outlined text-sm animate-spin">sync</span>
-                      Mengalihkan...
-                    </>
-                  ) : (
-                    <>
-                      <span className="material-symbols-outlined text-sm">send</span>
-                      Kirim Ke WA
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
     </div>
   );
 }

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Outfit, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Outfit, Geist_Mono, Geist } from "next/font/google";
 import "./globals.css";
 import Navbar from "../../components/shared/navbar";
 import Footer from "../../components/shared/footer";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -43,7 +46,7 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${plusJakarta.variable} ${outfit.variable} ${geistMono.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", plusJakarta.variable, outfit.variable, geistMono.variable, "font-sans", geist.variable)}
     >
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
