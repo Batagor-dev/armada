@@ -87,7 +87,7 @@ export default function VehicleCard<TVehicle extends VehicleCardData>({
 
         <Link
           href={`/vehicles/${vehicle.id}`}
-          className="group/btn flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-primary font-bold text-white transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+          className="group/btn flex h-9 sm:h-9 xl:h-10 w-full items-center justify-center gap-2 rounded-xl text-sm bg-gradient-to-r from-primary to-[#2A4F7A] text-white font-semibold text-white transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
         >
           <span>Lihat Detail</span>
 

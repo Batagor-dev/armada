@@ -1,15 +1,38 @@
+import Link from "next/link";
+
 export default function Footer() {
   return (
-    <footer id="footer" className="w-full pt-16 pb-8 bg-slate-900 text-slate-400 border-t border-slate-800">
-      <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-16 grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer
+      id="footer"
+      className="relative w-full pt-16 pb-8 text-slate-400 border-t border-slate-800 overflow-hidden"
+    >
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/assets/images/footer/showroom.jpg')",
+        }}
+      />
+
+      {/* Blue Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/80 via-slate-900/90 to-slate-950/95" />
+
+      {/* Content */}
+      <div className="relative max-w-[1280px] mx-auto px-4 md:px-8 lg:px-16 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Brand Column */}
         <div className="space-y-6">
-          <span className="font-sans text-2xl font-black text-white">
-            Armada<span className="text-primary">Kita</span>
-          </span>
+          <Link
+            href="/"
+            className="font-display text-2xl font-extrabold tracking-tight cursor-pointer active:scale-95 transition-transform flex items-center gap-0.5"
+          >
+            <span className="text-white dark:text-white">Armada</span>
+            <span className="premium-gradient-text">Kita</span>
+          </Link>
+
           <p className="text-slate-400 text-sm pr-8 leading-relaxed">
             Penyedia layanan sewa mobil terpercaya dengan koleksi armada eksklusif dan prima untuk kenyamanan gaya hidup dan perjalanan Anda.
           </p>
+
           <div className="flex gap-4">
             <a
               className="w-10 h-10 rounded-full border border-slate-800 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group"
@@ -20,6 +43,7 @@ export default function Footer() {
                 share
               </span>
             </a>
+
             <a
               className="w-10 h-10 rounded-full border border-slate-800 flex items-center justify-center hover:bg-primary hover:border-primary transition-all duration-300 group"
               href="#"
@@ -34,20 +58,22 @@ export default function Footer() {
 
         {/* Links Column 1 */}
         <div className="space-y-6">
-          <h5 className="text-white font-bold uppercase tracking-widest text-xs">Layanan</h5>
+          <h5 className="text-white font-bold uppercase tracking-widest text-xs">
+            Layanan
+          </h5>
           <ul className="space-y-4 text-sm">
             <li>
-              <a className="text-slate-400 hover:text-white transition-colors cursor-pointer" href="#fleet">
+              <a className="text-slate-400 hover:text-white transition-colors" href="#fleet">
                 Daftar Armada
               </a>
             </li>
             <li>
-              <a className="text-slate-400 hover:text-white transition-colors cursor-pointer" href="#about">
+              <a className="text-slate-400 hover:text-white transition-colors" href="#about">
                 Tentang Kami
               </a>
             </li>
             <li>
-              <a className="text-slate-400 hover:text-white transition-colors cursor-pointer" href="#tutorial">
+              <a className="text-slate-400 hover:text-white transition-colors" href="#tutorial">
                 Cara Sewa
               </a>
             </li>
@@ -56,20 +82,22 @@ export default function Footer() {
 
         {/* Links Column 2 */}
         <div className="space-y-6">
-          <h5 className="text-white font-bold uppercase tracking-widest text-xs">Perusahaan</h5>
+          <h5 className="text-white font-bold uppercase tracking-widest text-xs">
+            Perusahaan
+          </h5>
           <ul className="space-y-4 text-sm">
             <li>
-              <a className="text-slate-400 hover:text-white transition-colors cursor-pointer" href="#about">
+              <a className="text-slate-400 hover:text-white transition-colors" href="#about">
                 Tentang Kami
               </a>
             </li>
             <li>
-              <a className="text-slate-400 hover:text-white transition-colors cursor-pointer" href="#blog">
+              <a className="text-slate-400 hover:text-white transition-colors" href="#blog">
                 Blog & Berita
               </a>
             </li>
             <li>
-              <a className="text-slate-400 hover:text-white transition-colors cursor-pointer" href="#">
+              <a className="text-slate-400 hover:text-white transition-colors" href="#">
                 Pusat Bantuan
               </a>
             </li>
@@ -78,18 +106,26 @@ export default function Footer() {
 
         {/* Links Column 3 */}
         <div className="space-y-6">
-          <h5 className="text-white font-bold uppercase tracking-widest text-xs">Kontak</h5>
+          <h5 className="text-white font-bold uppercase tracking-widest text-xs">
+            Kontak
+          </h5>
           <ul className="space-y-4 text-sm">
             <li className="flex items-center gap-2 text-slate-400">
-              <span className="material-symbols-outlined text-primary text-lg">mail</span>
+              <span className="material-symbols-outlined text-primary text-lg">
+                mail
+              </span>
               info@armadakita.com
             </li>
+
             <li className="flex items-center gap-2 text-slate-400">
-              <span className="material-symbols-outlined text-primary text-lg">call</span>
+              <span className="material-symbols-outlined text-primary text-lg">
+                call
+              </span>
               +62 21 555 0123
             </li>
+
             <li>
-              <a className="text-slate-400 hover:text-white transition-colors cursor-pointer" href="#">
+              <a className="text-slate-400 hover:text-white transition-colors" href="#">
                 Syarat & Ketentuan
               </a>
             </li>
@@ -97,8 +133,11 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-16 mt-16 pt-8 border-t border-slate-850 text-center">
-        <p className="text-slate-500 text-sm">© 2026 ArmadaKita. Seluruh hak cipta dilindungi.</p>
+      {/* Bottom */}
+      <div className="relative max-w-[1280px] mx-auto px-4 md:px-8 lg:px-16 mt-16 pt-8 border-t border-slate-700 text-center">
+        <p className="text-slate-500 text-sm">
+          © 2026 ArmadaKita. Seluruh hak cipta dilindungi.
+        </p>
       </div>
     </footer>
   );

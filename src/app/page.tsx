@@ -233,18 +233,18 @@ export default function Home() {
           Anda cari saat ini.
         </p>
 
-        <button
-          onClick={handleResetSearch}
+        <a
+          href="/vehicles"
           className="bg-primary hover:bg-blue-700 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition-all cursor-pointer"
         >
           Lihat Semua Armada
-        </button>
+        </a>
       </div>
     )}
 
       <div className="flex justify-center mt-12">
             <a
-              href="/armada"
+              href="/vehicles"
               className="group inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-[var(--primary)] text-white font-bold text-sm tracking-wide hover:scale-105 transition-all duration-300 shadow-lg"
             >
               Lihat Semua Armada

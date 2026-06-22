@@ -218,7 +218,7 @@ const sorting = [
               </div>
 
               {filteredVehicles.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                   {filteredVehicles.map((vehicle) => (
                     <VehicleCard
                       key={vehicle.id}
