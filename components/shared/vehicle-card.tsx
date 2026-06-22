@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export type VehicleCardData = {
   id: number;
   name: string;
@@ -9,7 +11,7 @@ export type VehicleCardData = {
   mileage: number;
   transmission: string;
   daily_price: number;
-  img: string;
+  img: string [] | string;
 };
 
 type VehicleCardProps<TVehicle extends VehicleCardData> = {
@@ -29,7 +31,7 @@ export default function VehicleCard<TVehicle extends VehicleCardData>({
     <div className="group overflow-hidden bg-white dark:bg-slate-900 transition-all duration-300 hover:-translate-y-1">
       <div className="relative h-32 md:h-48 bg-slate-100 dark:bg-slate-800 overflow-hidden">
         <img
-          src={vehicle.img}
+          src={vehicle.img[0]}
           alt={vehicle.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
@@ -83,13 +85,16 @@ export default function VehicleCard<TVehicle extends VehicleCardData>({
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={() => onDetail(vehicle)}
-          className="w-full bg-primary hover:opacity-90 text-white text-xs md:text-sm font-bold py-2.5 rounded-xl transition-all active:scale-95 cursor-pointer"
+        <Link
+          href={`/vehicles/${vehicle.id}`}
+          className="group/btn flex h-10 w-full items-center justify-center gap-2 rounded-xl bg-primary font-bold text-white transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
         >
-          Lihat Detail
-        </button>
+          <span>Lihat Detail</span>
+
+          <span className="material-symbols-outlined text-lg transition-transform duration-300 group-hover/btn:translate-x-1">
+            arrow_forward
+          </span>
+        </Link>
       </div>
     </div>
   );
