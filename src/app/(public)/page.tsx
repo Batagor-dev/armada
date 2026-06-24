@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import VehicleCard from "../../components/shared/vehicle-card";
-import { VEHICLES_DATABASE } from "@/data/vehicles";
+import VehicleCard from "../../../components/shared/vehicle-card";
+import { VEHICLES_DATABASE } from "../../data/vehicles";
 
 const VEHICLE_TYPES = ["Semua Tipe", "Mobil", "Motor"];
 
@@ -127,13 +127,13 @@ export default function Home() {
 
             {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-              <button className="bg-gradient-to-br from-[var(--secondary)] via-[var(--accent)] to-[#E8D5A8] hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold transition">
+              <a href="/vehicles" className="bg-gradient-to-br from-[var(--secondary)] via-[var(--accent)] to-[#E8D5A8] hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold transition">
                 Booking Sekarang
-              </button>
+              </a>
 
-              <button className="border border-gray-300 hover:border-orange-500 hover:premium-gradient-text px-8 py-4 rounded-xl font-semibold transition">
+              <a href="#fleet" className="border border-gray-300 hover:border-orange-500 hover:premium-gradient-text px-8 py-4 rounded-xl font-semibold transition">
                 Lihat Armada
-              </button>
+              </a>
             </div>
           </div>
 

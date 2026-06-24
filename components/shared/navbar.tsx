@@ -37,7 +37,7 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-16 flex items-center justify-between">
-          
+
           {/* LOGO */}
           <Link
             href="/"
@@ -45,8 +45,8 @@ export default function Navbar() {
           >
             <img
               src="/assets/images/logo/logo.png"
+              alt="Armada Kita"
               className="h-6 w-6 sm:h-7 sm:w-7 object-contain"
-              alt="logo"
             />
 
             <span className="text-xl sm:text-2xl">
@@ -56,7 +56,7 @@ export default function Navbar() {
           </Link>
 
           {/* DESKTOP MENU */}
-          <div className="hidden md:flex gap-1">
+          <div className="hidden md:flex items-center gap-1">
             {menuItems.map((item) => (
               <Link
                 key={item.href}
@@ -72,25 +72,42 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* MOBILE BUTTON */}
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="md:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-          >
-            <span className="material-symbols-outlined text-2xl">
-              menu
-            </span>
-          </button>
+          {/* RIGHT ACTIONS */}
+          <div className="flex items-center gap-2">
+
+            {/* MASUK (desktop only) */}
+            <a href="/login" className="hidden sm:block text-slate-500 hover:text-primary text-sm font-semibold px-3 py-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition">
+              Masuk
+            </a>
+
+            {/* SEWA SEKARANG (desktop) */}
+            <a
+              href="#fleet"
+              className="hidden sm:inline-flex bg-gradient-to-r from-primary to-[#2A4F7A] text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95"
+            >
+              Sewa Sekarang
+            </a>
+
+            {/* HAMBURGER */}
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="md:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+            >
+              <span className="material-symbols-outlined text-2xl">
+                menu
+              </span>
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* ================= MOBILE OVERLAY ================= */}
+      {/* ================= MOBILE SIDEBAR ================= */}
       <div
-        className={`fixed inset-0 z-50 transition-all duration-300 ${
+        className={`fixed inset-0 z-50 transition ${
           mobileMenuOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
-        {/* BLUR BACKDROP (3/4 screen feel) */}
+        {/* OVERLAY BLUR */}
         <div
           onClick={() => setMobileMenuOpen(false)}
           className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
@@ -100,7 +117,7 @@ export default function Navbar() {
 
         {/* SIDEBAR */}
         <div
-          className={`absolute right-0 top-0 h-full w-[75%] max-w-sm bg-white dark:bg-[#030712] shadow-2xl transform transition-transform duration-300 ${
+          className={`absolute right-0 top-0 h-full w-[75%] max-w-sm bg-white dark:bg-[#030712] shadow-2xl transition-transform duration-300 ${
             mobileMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
@@ -115,7 +132,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* MENU LIST */}
+          {/* MENU */}
           <div className="flex flex-col p-4 gap-2">
             {menuItems.map((item) => (
               <Link
@@ -133,14 +150,22 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA */}
+          {/* CTA BOTTOM */}
           <div className="absolute bottom-0 w-full p-4 border-t border-slate-200 dark:border-slate-800">
-            <a
-              href="#fleet"
-              className="block text-center bg-gradient-to-r from-primary to-[#2A4F7A] text-white py-3 rounded-xl font-bold"
-            >
-              Sewa Sekarang
-            </a>
+            <div className="flex flex-col gap-2">
+
+              <button className="w-full text-center text-slate-600 dark:text-slate-300 hover:text-primary py-2 font-semibold rounded-xl">
+                Masuk
+              </button>
+
+              <a
+                href="#fleet"
+                className="w-full text-center bg-gradient-to-r from-primary to-[#2A4F7A] text-white py-3 rounded-xl font-bold"
+              >
+                Sewa Sekarang
+              </a>
+
+            </div>
           </div>
         </div>
       </div>

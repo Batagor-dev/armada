@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import VehicleCard from "../../../components/shared/vehicle-card";
+import VehicleCard from "../../../../components/shared/vehicle-card";
 import { VEHICLES_DATABASE } from "@/data/vehicles";
 import { Vehicle } from "@/types/vehicle";
 
