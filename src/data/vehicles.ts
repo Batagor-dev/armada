@@ -39,7 +39,14 @@ export const VEHICLES_DATABASE: Vehicle[] = [
     seats: 4,
     color: "White",
     daily_price: 1200000,
-    img: ["/assets/images/vehicles/nisan-silvia.jpg"],
+    description:
+      "Nissan Silvia S15 adalah mobil sport yang terkenal dengan performa tinggi dan desain aerodinamisnya. Ditenagai oleh mesin SR20DET 2.0L turbocharged, Silvia S15 mampu menghasilkan tenaga hingga 250 hp, menjadikannya salah satu mobil sport paling populer di kalangan penggemar drift dan modifikasi. Dengan sistem penggerak roda belakang (RWD) dan suspensi yang disetel untuk performa, mobil ini menawarkan handling yang presisi dan responsif. Desain eksteriornya yang agresif, termasuk lampu depan tajam dan body kit sporty, menambah daya tarik visualnya. Nissan Silvia S15 tetap menjadi pilihan favorit bagi para penggemar mobil sport yang mencari kombinasi antara kecepatan, gaya, dan kemampuan drifting dalam satu paket.",
+    img: [
+      "/assets/images/vehicles/nisan-silvia.jpg",
+      "/assets/images/vehicles/silvia-2.jpg",
+      "/assets/images/vehicles/silvia-3.jpg",
+      "/assets/images/vehicles/silvia-4.jpg",
+    ],
   },
   {
     id: 3,
@@ -51,8 +58,10 @@ export const VEHICLES_DATABASE: Vehicle[] = [
     transmission: "Automatic",
     fuel: "Bensin",
     seats: 7,
-    color: "Black",
+    color: "SIlver",
     daily_price: 1750000,
+    description:
+      "Toyota Fortuner GR Sport adalah SUV premium yang dirancang untuk memberikan performa tinggi dan kenyamanan dalam berkendara. Ditenagai oleh mesin 2.8L turbocharged, Fortuner GR Sport mampu menghasilkan tenaga hingga 204 hp, menjadikannya salah satu SUV tercepat di kelasnya. Dengan sistem penggerak empat roda (4WD) dan suspensi yang disetel untuk performa, mobil ini menawarkan handling yang stabil dan responsif di berbagai kondisi jalan. Desain eksteriornya yang agresif, termasuk gril depan yang khas dan body kit sporty, menambah daya tarik visualnya. Toyota Fortuner GR Sport tetap menjadi pilihan populer bagi mereka yang mencari kombinasi antara kecepatan, gaya, dan kenyamanan dalam satu paket.",
     img: ["/assets/images/vehicles/fotuner.jpg"],
   },
   {
@@ -67,6 +76,8 @@ export const VEHICLES_DATABASE: Vehicle[] = [
     seats: 7,
     color: "White",
     daily_price: 450000,
+    description:
+      "Toyota Avanza 1.5 G CVT adalah MPV keluarga yang sangat populer, terkenal dengan keandalan, efisiensi bahan bakar, dan kabinnya yang luas. Menggunakan transmisi CVT yang halus dan mesin 1.5L yang responsif, mobil ini mampu menampung hingga 7 penumpang dengan kenyamanan ekstra. Dilengkapi dengan fitur keselamatan modern dan sistem hiburan layar sentuh, Toyota Avanza adalah pilihan kendaraan sewa paling ideal untuk perjalanan keluarga, operasional bisnis, maupun liburan jarak jauh di perkotaan.",
     img: ["/assets/images/vehicles/avanza.jpg"],
   },
   {
@@ -81,7 +92,14 @@ export const VEHICLES_DATABASE: Vehicle[] = [
     seats: 5,
     color: "Red",
     daily_price: 2500000,
-    img: ["/assets/images/vehicles/civic.jpg"],
+    description:
+      "Honda Civic Type R FL5 adalah mobil sport hatchback yang dirancang untuk memberikan performa tinggi dan pengalaman berkendara yang menyenangkan. Ditenagai oleh mesin 2.0L turbocharged, Civic Type R FL5 mampu menghasilkan tenaga hingga 306 hp, menjadikannya salah satu hatchback tercepat di kelasnya. Dengan sistem penggerak roda depan (FWD) yang canggih dan suspensi yang disetel untuk performa, mobil ini menawarkan handling yang presisi dan responsif. Desain aerodinamisnya yang agresif, termasuk sayap belakang besar dan body kit sporty, menambah daya tarik visualnya. Honda Civic Type R FL5 tetap menjadi pilihan populer bagi penggemar mobil sport yang mencari kombinasi antara kecepatan, gaya, dan kenyamanan dalam satu paket.",
+    img: [
+      "/assets/images/vehicles/civic.jpg",
+      "/assets/images/vehicles/civic-2.jpg",
+      "/assets/images/vehicles/civic-3.jpg",
+      "/assets/images/vehicles/civic-4.jpg",
+    ],
   },
   {
     id: 6,
@@ -95,7 +113,12 @@ export const VEHICLES_DATABASE: Vehicle[] = [
     seats: 2,
     color: "Red",
     daily_price: 250000,
-    img: ["/assets/images/vehicles/cbr250.jpg"],
+    description:
+      "Honda CBR250R adalah sepeda motor sport yang dirancang untuk memberikan pengalaman berkendara yang menyenangkan dan responsif. Ditenagai oleh mesin 249cc, CBR250R menawarkan tenaga yang cukup untuk perjalanan harian maupun petualangan jarak jauh. Dengan desain aerodinamis dan posisi berkendara yang nyaman, motor ini cocok untuk pengendara pemula maupun berpengalaman. Fitur-fitur modern seperti sistem pengereman ABS dan panel instrumen digital menambah kenyamanan dan keselamatan saat berkendara. Honda CBR250R tetap menjadi pilihan populer bagi mereka yang mencari kombinasi antara performa, gaya, dan keandalan dalam satu paket.",
+    img: [
+      "/assets/images/vehicles/cbr250.jpg",
+      "/assets/images/vehicles/cbr250-2.jpg",
+    ],
   },
   {
     id: 7,
@@ -109,7 +132,9 @@ export const VEHICLES_DATABASE: Vehicle[] = [
     seats: 2,
     color: "Black",
     daily_price: 175000,
-    img:  ["/assets/images/vehicles/vario.jpg"],
+    description:
+      "Honda Vario 160 CBS hadir dengan mesin generasi terbaru 160cc eSP+ yang memberikan performa bertenaga namun tetap irit bahan bakar. Skuter matik premium ini mengusung desain sporti bergaris tegas, flat deck yang fungsional, serta bagasi luas di bawah jok. Sangat lincah bermanuver di jalanan perkotaan yang padat, menjadikannya opsi sewa motor harian terbaik untuk mobilitas yang cepat, praktis, dan tetap bergaya.",
+    img: ["/assets/images/vehicles/vario.jpg"],
   },
   {
     id: 8,
@@ -123,6 +148,8 @@ export const VEHICLES_DATABASE: Vehicle[] = [
     seats: 2,
     color: "Black Matte",
     daily_price: 300000,
+    description:
+      "Yamaha XMAX 250 Connected merupakan skuter maxi premium yang menawarkan kenyamanan kelas atas untuk perjalanan jarak jauh (touring) maupun berkendara harian. Ditenagai mesin 250cc yang tangguh, motor ini dilengkapi dengan fitur navigasi Garmin, sistem konektivitas smartphone, kontrol traksi (TCS), dan bagasi super luas yang muat dua helm full-face. Sangat cocok disewa bagi Anda yang menginginkan kemewahan, stabilitas berkendara, dan gengsi tinggi selama di perjalanan.",
     img: ["/assets/images/vehicles/xnmax.jpg"],
   },
   {
@@ -137,6 +164,8 @@ export const VEHICLES_DATABASE: Vehicle[] = [
     seats: 2,
     color: "Green",
     daily_price: 275000,
+    description:
+      "Vespa Primavera 150 i-get memadukan pesona desain klasik Italia yang tak lekang oleh waktu dengan teknologi modern yang ramah lingkungan. Didukung oleh mesin i-get yang halus dan minim getaran, Vespa ini memberikan pengalaman berkendara yang santai, trendi, dan elegan. Pilihan sewa motor paling favorit untuk kebutuhan foto estetis, keliling kota santai, atau sekadar menikmati liburan dengan gaya retro yang berkelas.",
     img: ["/assets/images/vehicles/vespa.jpg"],
   },
 ];

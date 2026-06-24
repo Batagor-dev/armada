@@ -93,13 +93,13 @@ export default async function VehicleDetailPage({
               </div>
 
               {/* CTA BUTTON */}
-              <a
-                href={`https://wa.me/628123456789?text=Halo saya ingin sewa ${vehicle.name}`}
-                target="_blank"
-                className="mt-6 flex h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-primary to-[#2A4F7A] text-white font-semibold shadow-md transition hover:scale-[1.02] active:scale-[0.98]"
+              <Link
+                href={`/vehicles/${id}/booking`}
+                className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-[#2A4F7A] text-white font-semibold shadow-md transition hover:scale-[1.02] active:scale-[0.98]"
               >
-                Sewa Sekarang
-              </a>
+                <span className="material-symbols-outlined text-lg">edit_note</span>
+                Pesan Sekarang
+              </Link>
             </div>
 
             {/* SPESIFIKASI */}

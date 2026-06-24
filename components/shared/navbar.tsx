@@ -75,14 +75,9 @@ export default function Navbar() {
           {/* RIGHT ACTIONS */}
           <div className="flex items-center gap-2">
 
-            {/* MASUK (desktop only) */}
-            <a href="/login" className="hidden sm:block text-slate-500 hover:text-primary text-sm font-semibold px-3 py-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition">
-              Masuk
-            </a>
-
             {/* SEWA SEKARANG (desktop) */}
             <a
-              href="#fleet"
+              href="/vehicles"
               className="hidden sm:inline-flex bg-gradient-to-r from-primary to-[#2A4F7A] text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/20 transition-all active:scale-95"
             >
               Sewa Sekarang
@@ -153,13 +148,8 @@ export default function Navbar() {
           {/* CTA BOTTOM */}
           <div className="absolute bottom-0 w-full p-4 border-t border-slate-200 dark:border-slate-800">
             <div className="flex flex-col gap-2">
-
-              <button className="w-full text-center text-slate-600 dark:text-slate-300 hover:text-primary py-2 font-semibold rounded-xl">
-                Masuk
-              </button>
-
               <a
-                href="#fleet"
+                href="/vehicles"
                 className="w-full text-center bg-gradient-to-r from-primary to-[#2A4F7A] text-white py-3 rounded-xl font-bold"
               >
                 Sewa Sekarang
