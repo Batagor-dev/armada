@@ -1,4 +1,6 @@
 import React from "react";
+import { FadeInScroll } from "@/../components/ui/animations/fade-in-scroll";
+import { SplitText } from "@/../components/ui/animations/split-text";
 
 export default function Tutorial() {
   return (
@@ -11,18 +13,20 @@ export default function Tutorial() {
             Panduan Pengguna
           </h2>
           <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight">
-            Semua yang kamu butuhkan sebelum mulai perjalanan
+            <SplitText text="Semua yang kamu butuhkan sebelum mulai perjalanan" className="justify-center" />
           </h3>
-          <p className="text-slate-500 text-sm leading-relaxed">
-            Dari booking sampai pembayaran, semuanya dibuat simpel tanpa ribet.
-          </p>
+          <FadeInScroll delay={0.4}>
+            <p className="text-slate-500 text-sm leading-relaxed">
+              Dari booking sampai pembayaran, semuanya dibuat simpel tanpa ribet.
+            </p>
+          </FadeInScroll>
         </div>
 
         {/* GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
           {/* LANGKAH BOOKING */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 space-y-6">
+          <FadeInScroll delay={0.2} direction="up" className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 space-y-6">
             <h4 className="text-xl font-bold text-slate-900 dark:text-white">
               Langkah Booking
             </h4>
@@ -45,10 +49,10 @@ export default function Tutorial() {
                 Lakukan pembayaran untuk mengamankan booking kamu.
               </li>
             </ol>
-          </div>
+          </FadeInScroll>
 
           {/* DOKUMEN */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 space-y-6">
+          <FadeInScroll delay={0.4} direction="up" className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 space-y-6">
             <h4 className="text-xl font-bold text-slate-900 dark:text-white">
               Dokumen yang Diperlukan
             </h4>
@@ -59,10 +63,10 @@ export default function Tutorial() {
               <li>• Deposit jaminan (opsional sesuai kendaraan)</li>
               <li>• Nomor kontak aktif untuk verifikasi</li>
             </ul>
-          </div>
+          </FadeInScroll>
 
           {/* PEMBAYARAN */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 space-y-6">
+          <FadeInScroll delay={0.6} direction="up" className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 space-y-6">
             <h4 className="text-xl font-bold text-slate-900 dark:text-white">
               Cara Pembayaran
             </h4>
@@ -87,10 +91,10 @@ export default function Tutorial() {
                 </div>
               </div>
             </div>
-          </div>
+          </FadeInScroll>
 
           {/* FAQ */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 space-y-6">
+          <FadeInScroll delay={0.8} direction="up" className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-8 space-y-6">
             <h4 className="text-xl font-bold text-slate-900 dark:text-white">
               FAQ
             </h4>
@@ -123,7 +127,7 @@ export default function Tutorial() {
                 </p>
               </details>
             </div>
-          </div>
+          </FadeInScroll>
 
         </div>
       </div>

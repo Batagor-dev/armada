@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import VehicleCard from "../../../../components/shared/vehicle-card";
 import { VEHICLES_DATABASE } from "@/data/vehicles";
 import { Vehicle } from "@/types/vehicle";
+import { FadeInScroll } from "../../../../components/ui/animations/fade-in-scroll";
+import { SplitText } from "../../../../components/ui/animations/split-text";
 
 const formatRupiah = (value: number) =>
   new Intl.NumberFormat("id-ID", {
@@ -74,12 +76,14 @@ const sorting = [
               Daftar Kendaraan
             </p>
             <h1 className="mt-3 text-4xl md:text-6xl font-black font-display leading-tight tracking-tight">
-              Pilih armada yang pas untuk perjalanan Anda
+              <SplitText text="Pilih armada yang pas untuk perjalanan Anda" />
             </h1>
-            <p className="mt-5 text-base leading-relaxed text-slate-600 dark:text-slate-300">
-              Temukan mobil dan motor yang tersedia, bandingkan harga harian, lalu lihat detail
-              kendaraan sebelum melakukan pemesanan.
-            </p>
+            <FadeInScroll delay={0.4}>
+              <p className="mt-5 text-base leading-relaxed text-slate-600 dark:text-slate-300">
+                Temukan mobil dan motor yang tersedia, bandingkan harga harian, lalu lihat detail
+                kendaraan sebelum melakukan pemesanan.
+              </p>
+            </FadeInScroll>
           </div>
         </div>
       </section>
@@ -87,7 +91,7 @@ const sorting = [
       <section className="py-10 md:py-14">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8">
-            <aside className="h-fit rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <FadeInScroll direction="right" className="h-fit rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <div className="flex items-center justify-between gap-4">
                 <h2 className="font-bold text-lg">Filter</h2>
                 <button
@@ -188,10 +192,10 @@ const sorting = [
                   </select>
                 </label>
               </div>
-            </aside>
+            </FadeInScroll>
 
             <div>
-              <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
+              <FadeInScroll delay={0.2} direction="down" className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-slate-600 dark:text-slate-300">
                   Menampilkan{" "}
                   <span className="font-black text-slate-950 dark:text-white">
@@ -215,18 +219,19 @@ const sorting = [
                     ))}
                   </select>
                 </div>
-              </div>
+              </FadeInScroll>
 
               {filteredVehicles.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-5">
-                  {filteredVehicles.map((vehicle) => (
-                    <VehicleCard
-                      key={vehicle.id}
-                      vehicle={vehicle}
-                      formatPrice={formatRupiah}
-                      onDetail={setSelectedVehicle}
-                      showStatus
-                    />
+                  {filteredVehicles.map((vehicle, index) => (
+                    <FadeInScroll key={vehicle.id} delay={0.2 + (index % 10) * 0.1}>
+                      <VehicleCard
+                        vehicle={vehicle}
+                        formatPrice={formatRupiah}
+                        onDetail={setSelectedVehicle}
+                        showStatus
+                      />
+                    </FadeInScroll>
                   ))}
                 </div>
               ) : (

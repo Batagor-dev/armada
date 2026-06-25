@@ -1,4 +1,6 @@
 import React from "react";
+import { FadeInScroll } from "@/../components/ui/animations/fade-in-scroll";
+import { SplitText } from "@/../components/ui/animations/split-text";
 
 export default function About() {
   return (
@@ -14,15 +16,17 @@ export default function About() {
             </h2>
 
             <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight tracking-tight">
-              Bukan sekadar sewa kendaraan, tapi pengalaman perjalanan yang lebih tenang
+              <SplitText text="Bukan sekadar sewa kendaraan, tapi pengalaman perjalanan yang lebih tenang" />
             </h3>
 
-            <p className="text-slate-500 text-sm leading-relaxed">
-              ArmadaKita dibangun untuk bikin perjalanan kamu nggak ribet. Dari kendaraan yang selalu siap jalan sampai layanan yang responsif, semuanya dirancang biar kamu tinggal duduk, nyalain mesin, dan fokus ke tujuan.
-            </p>
+            <FadeInScroll delay={0.4}>
+              <p className="text-slate-500 text-sm leading-relaxed">
+                ArmadaKita dibangun untuk bikin perjalanan kamu nggak ribet. Dari kendaraan yang selalu siap jalan sampai layanan yang responsif, semuanya dirancang biar kamu tinggal duduk, nyalain mesin, dan fokus ke tujuan.
+              </p>
+            </FadeInScroll>
 
             {/* highlight box */}
-            <div className="p-6 bg-slate-50 dark:bg-slate-800/40 rounded-3xl border border-slate-100 dark:border-slate-800 flex items-start gap-4 hover:scale-[1.02] transition">
+            <FadeInScroll delay={0.6} direction="up" className="p-6 bg-slate-50 dark:bg-slate-800/40 rounded-3xl border border-slate-100 dark:border-slate-800 flex items-start gap-4 hover:scale-[1.02] transition">
               <span className="material-symbols-outlined text-primary text-3xl bg-blue-500/10 p-3 rounded-2xl">
                 workspace_premium
               </span>
@@ -35,7 +39,7 @@ export default function About() {
                   Semua unit, semua layanan, dan semua proses kami jaga biar tetap konsisten di level tertinggi.
                 </p>
               </div>
-            </div>
+            </FadeInScroll>
           </div>
 
           {/* RIGHT: CARDS */}
@@ -67,22 +71,25 @@ export default function About() {
                 color: "text-purple-500"
               }
             ].map((item, i) => (
-              <div
+              <FadeInScroll
                 key={i}
-                className="group bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                delay={0.2 + (i % 4) * 0.1}
+                direction="up"
               >
-                <span className={`material-symbols-outlined ${item.color} text-4xl mb-6 group-hover:scale-110 transition`}>
-                  {item.icon}
-                </span>
+                <div className="group h-full bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                  <span className={`material-symbols-outlined ${item.color} text-4xl mb-6 group-hover:scale-110 transition`}>
+                    {item.icon}
+                  </span>
 
-                <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
-                  {item.title}
-                </h4>
+                  <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                    {item.title}
+                  </h4>
 
-                <p className="text-slate-500 text-xs leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
+                  <p className="text-slate-500 text-xs leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </FadeInScroll>
             ))}
 
           </div>

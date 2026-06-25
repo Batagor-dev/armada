@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import { BLOGS_DATABASE } from "@/data/blogs";
+import { FadeInScroll } from "@/../components/ui/animations/fade-in-scroll";
+import { SplitText } from "@/../components/ui/animations/split-text";
 
 export default function Blog() {
   const posts = BLOGS_DATABASE.slice(0, 4);
@@ -18,23 +20,25 @@ export default function Blog() {
           </h2>
 
           <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight">
-            Cerita, tips, dan insight sebelum kamu jalan
+            <SplitText text="Cerita, tips, dan insight sebelum kamu jalan" className="justify-center" />
           </h3>
 
-          <p className="text-slate-500 text-sm leading-relaxed">
-            Biar kamu gak cuma sewa, tapi juga paham cara ambil keputusan yang
-            tepat.
-          </p>
+          <FadeInScroll delay={0.4}>
+            <p className="text-slate-500 text-sm leading-relaxed">
+              Biar kamu gak cuma sewa, tapi juga paham cara ambil keputusan yang
+              tepat.
+            </p>
+          </FadeInScroll>
         </div>
 
         {/* GRID BLOG */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {posts.map((post) => (
-            <Link
-              key={post.id}
-              href={`/blog/${post.slug}`}
-              className="group bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800 rounded-3xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
+          {posts.map((post, index) => (
+            <FadeInScroll key={post.id} delay={0.2 + (index % 4) * 0.1}>
+              <Link
+                href={`/blog/${post.slug}`}
+                className="group bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800 rounded-3xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 block h-full"
+              >
               {/* IMAGE */}
               <div className="h-40 overflow-hidden">
                 <img
@@ -72,7 +76,8 @@ export default function Blog() {
                   Baca selengkapnya →
                 </div>
               </div>
-            </Link>
+              </Link>
+            </FadeInScroll>
           ))}
         </div>
       </div>

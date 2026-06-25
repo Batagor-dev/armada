@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BLOGS_DATABASE, getBlogBySlug } from "@/data/blogs";
+import { FadeInScroll } from "@/../components/ui/animations/fade-in-scroll";
+import { SplitText } from "@/../components/ui/animations/split-text";
 
 type Props = {
   params: Promise<{
@@ -40,12 +42,14 @@ export default async function BlogDetailPage({ params }: Props) {
           </span>
 
           <h1 className="mt-5 text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white leading-[1.15] tracking-tight">
-            {blog.title}
+            <SplitText text={blog.title} />
           </h1>
 
-          <p className="mt-5 text-base md:text-lg text-slate-500 dark:text-slate-400 leading-relaxed">
-            {blog.description}
-          </p>
+          <FadeInScroll delay={0.4}>
+            <p className="mt-5 text-base md:text-lg text-slate-500 dark:text-slate-400 leading-relaxed">
+              {blog.description}
+            </p>
+          </FadeInScroll>
 
           <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-400">
             <span className="font-medium text-slate-600 dark:text-slate-300">{blog.author}</span>
@@ -62,13 +66,13 @@ export default async function BlogDetailPage({ params }: Props) {
       {/* COVER */}
       <section>
         <div className="max-w-4xl mx-auto px-5 md:px-8">
-          <div className="overflow-hidden rounded-2xl md:rounded-3xl shadow-md">
+          <FadeInScroll delay={0.2} direction="up" className="overflow-hidden rounded-2xl md:rounded-3xl shadow-md">
             <img
               src={blog.img}
               alt={blog.title}
               className="w-full h-[220px] sm:h-[340px] md:h-[480px] object-cover"
             />
-          </div>
+          </FadeInScroll>
         </div>
       </section>
 
@@ -77,7 +81,7 @@ export default async function BlogDetailPage({ params }: Props) {
         <div className="max-w-2xl mx-auto px-5 md:px-8">
           <article className="space-y-10">
             {blog.content.map((section, index) => (
-              <div key={index}>
+              <FadeInScroll key={index} delay={0.1} direction="up">
                 {section.heading && (
                   <h2 className="text-2xl md:text-3xl font-black text-slate-900 dark:text-white mb-3 leading-snug">
                     {section.heading}
@@ -86,7 +90,7 @@ export default async function BlogDetailPage({ params }: Props) {
                 <p className="text-slate-600 dark:text-slate-300 leading-[1.85] text-base md:text-[17px]">
                   {section.body}
                 </p>
-              </div>
+              </FadeInScroll>
             ))}
           </article>
         </div>
@@ -105,12 +109,12 @@ export default async function BlogDetailPage({ params }: Props) {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
               {BLOGS_DATABASE.filter((item) =>
                 blog.relatedIds?.includes(item.id)
-              ).map((related) => (
-                <Link
-                  key={related.id}
-                  href={`/blog/${related.slug}`}
-                  className="group overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-                >
+              ).map((related, index) => (
+                <FadeInScroll key={related.id} delay={0.2 + (index % 3) * 0.1}>
+                  <Link
+                    href={`/blog/${related.slug}`}
+                    className="group overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 block h-full"
+                  >
                   <div className="overflow-hidden">
                     <img
                       src={related.img}
@@ -133,6 +137,7 @@ export default async function BlogDetailPage({ params }: Props) {
                     </p>
                   </div>
                 </Link>
+                </FadeInScroll>
               ))}
             </div>
           </div>

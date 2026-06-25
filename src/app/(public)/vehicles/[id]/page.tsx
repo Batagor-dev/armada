@@ -3,6 +3,8 @@ import { getVehicleById } from "@/data/vehicles";
 import Link from "next/link";
 import VehicleGallery from "@/../components/shared/vehicle-gallery";
 import SpecItem from "@/../components/shared/spec-item";
+import { FadeInScroll } from "@/../components/ui/animations/fade-in-scroll";
+import { SplitText } from "@/../components/ui/animations/split-text";
 
 type Props = {
   params: Promise<{
@@ -45,7 +47,7 @@ export default async function VehicleDetailPage({
         <div className="grid lg:grid-cols-[1.6fr_1fr] gap-10">
 
           {/* Gallery */}
-          <div>
+          <FadeInScroll delay={0.2} direction="right">
             <VehicleGallery
               images={
                 Array.isArray(vehicle.img)
@@ -63,16 +65,16 @@ export default async function VehicleDetailPage({
                 {vehicle.description}
               </p>
             </div>
-          </div>
+          </FadeInScroll>
 
           {/* Detail */}
           <div className="space-y-6">
 
             {/* CARD UTAMA */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <FadeInScroll delay={0.4} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
 
               <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
-                {vehicle.name}
+                <SplitText text={vehicle.name} />
               </h1>
 
               <p className="mt-1 text-sm text-slate-500">
@@ -100,10 +102,10 @@ export default async function VehicleDetailPage({
                 <span className="material-symbols-outlined text-lg">edit_note</span>
                 Pesan Sekarang
               </Link>
-            </div>
+            </FadeInScroll>
 
             {/* SPESIFIKASI */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <FadeInScroll delay={0.6} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
 
               <h3 className="mb-4 text-base font-semibold text-slate-900 dark:text-white">
                 Spesifikasi Kendaraan
@@ -124,7 +126,7 @@ export default async function VehicleDetailPage({
                 <SpecItem icon="directions_car" title="Tipe" value={vehicle.type} />
 
               </div>
-            </div>
+            </FadeInScroll>
 
           </div>
 

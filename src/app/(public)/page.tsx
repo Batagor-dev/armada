@@ -3,6 +3,9 @@
 import { useState } from "react";
 import VehicleCard from "../../../components/shared/vehicle-card";
 import { VEHICLES_DATABASE } from "../../data/vehicles";
+import { FadeInScroll } from "../../../components/ui/animations/fade-in-scroll";
+import { SplitText } from "../../../components/ui/animations/split-text";
+import { CountUp } from "../../../components/ui/animations/count-up";
 
 const VEHICLE_TYPES = ["Semua Tipe", "Mobil", "Motor"];
 
@@ -112,21 +115,23 @@ export default function Home() {
           {/* Heading */}
           <div className="text-center max-w-5xl mx-auto mb-12">
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight text-gray-900">
-              Booking Kendaraan
-              <span className="block premium-gradient-text">
-                Mudah, Cepat & Terpercaya
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black leading-tight text-gray-900 text-center">
+              <SplitText text="Booking Kendaraan" className="justify-center" />
+              <span className="block premium-gradient-text text-center mt-2">
+                <SplitText text="Mudah, Cepat & Terpercaya" className="justify-center" />
               </span>
             </h1>
 
-            <p className="mt-6 text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
-              Sewa mobil harian, mingguan hingga bulanan dengan armada terbaik.
-              Tersedia layanan lepas kunci maupun dengan sopir profesional untuk
-              kebutuhan pribadi, bisnis, maupun perjalanan keluarga.
-            </p>
+            <FadeInScroll delay={0.8} distance={20}>
+              <p className="mt-6 text-gray-600 text-lg md:text-xl max-w-3xl mx-auto">
+                Sewa mobil harian, mingguan hingga bulanan dengan armada terbaik.
+                Tersedia layanan lepas kunci maupun dengan sopir profesional untuk
+                kebutuhan pribadi, bisnis, maupun perjalanan keluarga.
+              </p>
+            </FadeInScroll>
 
             {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+            <FadeInScroll delay={1} distance={20} className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
               <a href="/vehicles" className="bg-gradient-to-br from-[var(--secondary)] via-[var(--accent)] to-[#E8D5A8] hover:bg-orange-600 text-white px-8 py-4 rounded-xl font-semibold transition">
                 Booking Sekarang
               </a>
@@ -134,11 +139,11 @@ export default function Home() {
               <a href="#fleet" className="border border-gray-300 hover:border-orange-500 hover:premium-gradient-text px-8 py-4 rounded-xl font-semibold transition">
                 Lihat Armada
               </a>
-            </div>
+            </FadeInScroll>
           </div>
 
           {/* Car Showcase */}
-          <div className="relative flex justify-center items-center">
+          <FadeInScroll delay={0.2} direction="up" distance={50} className="relative flex justify-center items-center">
 
             {/* Shadow */}
             <div className="absolute bottom-0 w-[80%] h-20 bg-black/10 blur-3xl rounded-full"></div>
@@ -151,25 +156,25 @@ export default function Home() {
               alt="Armada Kendaraan"
               className="relative z-10 w-full max-w-6xl object-contain"
             />
-          </div>
+          </FadeInScroll>
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
 
-            <div className="bg-gray-50 rounded-2xl p-6 text-center border">
-              <h3 className="text-3xl font-bold premium-gradient-text">500+</h3>
+            <FadeInScroll delay={0.2} className="bg-gray-50 rounded-2xl p-6 text-center border">
+              <h3 className="text-3xl font-bold premium-gradient-text"><CountUp to={500} />+</h3>
               <p className="text-gray-600 mt-2">Unit Kendaraan</p>
-            </div>
+            </FadeInScroll>
 
-            <div className="bg-gray-50 rounded-2xl p-6 text-center border">
-              <h3 className="text-3xl font-bold premium-gradient-text">10.000+</h3>
+            <FadeInScroll delay={0.4} className="bg-gray-50 rounded-2xl p-6 text-center border">
+              <h3 className="text-3xl font-bold premium-gradient-text"><CountUp to={10000} />+</h3>
               <p className="text-gray-600 mt-2">Pelanggan Puas</p>
-            </div>
+            </FadeInScroll>
 
-            <div className="bg-gray-50 rounded-2xl p-6 text-center border">
-              <h3 className="text-3xl font-bold premium-gradient-text">24/7</h3>
+            <FadeInScroll delay={0.6} className="bg-gray-50 rounded-2xl p-6 text-center border">
+              <h3 className="text-3xl font-bold premium-gradient-text"><CountUp to={24} duration={1} />/7</h3>
               <p className="text-gray-600 mt-2">Layanan Customer Service</p>
-            </div>
+            </FadeInScroll>
 
           </div>
 
@@ -182,8 +187,8 @@ export default function Home() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-center gap-5 mb-10 text-center">
             <div className="max-w-2xl">
               <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
-                Kendaraan
-                <span className="block premium-gradient-text">Terlaris Minggu Ini</span>
+                <SplitText text="Kendaraan" className="justify-center" />
+                <span className="block premium-gradient-text"><SplitText text="Terlaris Minggu Ini" className="justify-center" /></span>
               </h2>
               
             </div>
@@ -209,13 +214,14 @@ export default function Home() {
 
           {filteredVehicles.length > 0 ? (
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-        {filteredVehicles.slice(0, 4).map((car) => (
-          <VehicleCard
-            key={car.id}
-            vehicle={car}
-            formatPrice={formatRupiah}
-            onDetail={setSelectedCar}
-          />
+        {filteredVehicles.slice(0, 4).map((car, index) => (
+          <FadeInScroll key={car.id} delay={index * 0.1}>
+            <VehicleCard
+              vehicle={car}
+              formatPrice={formatRupiah}
+              onDetail={setSelectedCar}
+            />
+          </FadeInScroll>
         ))}
       </div>
       ) : (
@@ -262,10 +268,10 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             
             {/* Header Content */}
-            <div className="lg:col-span-5 space-y-6">
+            <FadeInScroll direction="right" className="lg:col-span-5 space-y-6">
               <h2 className="text-xs font-black text-primary uppercase tracking-widest">Kenapa Memilih Kami</h2>
               <h3 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight tracking-tight">
-                Mengutamakan Kenyamanan dan Keselamatan Perjalanan Anda
+                <SplitText text="Mengutamakan Kenyamanan dan Keselamatan Perjalanan Anda" />
               </h3>
               <p className="text-slate-500 text-sm leading-relaxed">
                 ArmadaKita hadir sebagai solusi andalan sewa kendaraan Anda. Kami memiliki standar operasional ketat untuk memastikan Anda selalu berkendara dengan rasa aman, nyaman, dan puas.
@@ -279,46 +285,46 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-            </div>
+            </FadeInScroll>
 
             {/* Benefit Grid */}
             <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8">
               
               {/* Card 1 */}
-              <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <FadeInScroll delay={0.2} className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <span className="material-symbols-outlined text-primary text-4xl mb-6">health_and_safety</span>
                 <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Armada Selalu Prima</h4>
                 <p className="text-slate-500 text-xs leading-relaxed">
                   Semua kendaraan menjalani pemeriksaan teknis rutin lengkap di bengkel resmi serta pembersihan interior & eksterior mendalam sebelum diserahkan kepada Anda.
                 </p>
-              </div>
+              </FadeInScroll>
 
               {/* Card 2 */}
-              <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <FadeInScroll delay={0.3} className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <span className="material-symbols-outlined text-accent text-4xl mb-6">sell</span>
                 <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Harga Jujur & Transparan</h4>
                 <p className="text-slate-500 text-xs leading-relaxed">
                   Tidak ada biaya siluman. Seluruh detail harga sewa per hari, opsi asuransi, maupun biaya supir tertera dengan sangat transparan di awal transaksi.
                 </p>
-              </div>
+              </FadeInScroll>
 
               {/* Card 3 */}
-              <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <FadeInScroll delay={0.4} className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <span className="material-symbols-outlined text-emerald-500 text-4xl mb-6">support_agent</span>
                 <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Layanan Darurat 24 Jam</h4>
                 <p className="text-slate-500 text-xs leading-relaxed">
                   Jika terjadi kendala teknis atau kecelakaan di jalan raya, tim tanggap darurat kami siap dikirim ke lokasi Anda kapan saja, 24 jam sehari, 7 hari seminggu.
                 </p>
-              </div>
+              </FadeInScroll>
 
               {/* Card 4 */}
-              <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <FadeInScroll delay={0.5} className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 hover:bg-white dark:hover:bg-slate-900 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
                 <span className="material-symbols-outlined text-purple-500 text-4xl mb-6">vpn_key</span>
                 <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Supir & Lepas Kunci</h4>
                 <p className="text-slate-500 text-xs leading-relaxed">
                   Nikmati kebebasan menyetir sendiri dengan layanan lepas kunci, atau sewa bersama supir profesional kami yang ramah, berpengalaman, dan menguasai rute kota.
                 </p>
-              </div>
+              </FadeInScroll>
 
             </div>
           </div>
@@ -332,11 +338,13 @@ export default function Home() {
           <div className="text-center max-w-2xl mx-auto mb-20">
             <h2 className="text-xs font-black text-primary uppercase tracking-widest mb-3">Cara Sewa</h2>
             <p className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
-              Langkah Pemesanan Sangat Mudah
+              <SplitText text="Langkah Pemesanan Sangat Mudah" className="justify-center" />
             </p>
-            <p className="text-slate-500 text-sm">
-              Kami menyederhanakan proses penyewaan kendaraan agar Anda dapat segera memulai perjalanan tanpa hambatan administrasi yang rumit.
-            </p>
+            <FadeInScroll delay={0.4}>
+              <p className="text-slate-500 text-sm">
+                Kami menyederhanakan proses penyewaan kendaraan agar Anda dapat segera memulai perjalanan tanpa hambatan administrasi yang rumit.
+              </p>
+            </FadeInScroll>
           </div>
 
           {/* Interactive Steps Grid */}
@@ -346,7 +354,7 @@ export default function Home() {
             <div className="hidden md:block absolute top-10 left-1/8 right-1/8 h-0.5 bg-slate-200 dark:bg-slate-800 z-0"></div>
 
             {/* Step 1 */}
-            <div className="relative z-10 flex flex-col items-center text-center group">
+            <FadeInScroll delay={0.2} direction="up" className="relative z-10 flex flex-col items-center text-center group">
               <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-primary font-black text-xl mb-6 shadow-md group-hover:bg-primary group-hover:text-white transition-all duration-300">
                 1
               </div>
@@ -354,10 +362,10 @@ export default function Home() {
               <p className="text-slate-500 text-xs max-w-[200px] leading-relaxed">
                 Tentukan tipe mobil yang sesuai dengan kebutuhan kapasitas dan estetika perjalanan Anda dari katalog kami.
               </p>
-            </div>
+            </FadeInScroll>
 
             {/* Step 2 */}
-            <div className="relative z-10 flex flex-col items-center text-center group">
+            <FadeInScroll delay={0.4} direction="up" className="relative z-10 flex flex-col items-center text-center group">
               <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-primary font-black text-xl mb-6 shadow-md group-hover:bg-primary group-hover:text-white transition-all duration-300">
                 2
               </div>
@@ -365,10 +373,10 @@ export default function Home() {
               <p className="text-slate-500 text-xs max-w-[200px] leading-relaxed">
                 Pilih tanggal mulai, tanggal berakhir, dan di mana Anda ingin kendaraan diserahterimakan.
               </p>
-            </div>
+            </FadeInScroll>
 
             {/* Step 3 */}
-            <div className="relative z-10 flex flex-col items-center text-center group">
+            <FadeInScroll delay={0.6} direction="up" className="relative z-10 flex flex-col items-center text-center group">
               <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-primary font-black text-xl mb-6 shadow-md group-hover:bg-primary group-hover:text-white transition-all duration-300">
                 3
               </div>
@@ -376,10 +384,10 @@ export default function Home() {
               <p className="text-slate-500 text-xs max-w-[200px] leading-relaxed">
                 Isi formulir identitas singkat, lampirkan dokumen pendukung (KTP/SIM) dan tunggu verifikasi cepat admin kami.
               </p>
-            </div>
+            </FadeInScroll>
 
             {/* Step 4 */}
-            <div className="relative z-10 flex flex-col items-center text-center group">
+            <FadeInScroll delay={0.8} direction="up" className="relative z-10 flex flex-col items-center text-center group">
               <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-primary font-black text-xl mb-6 shadow-md group-hover:bg-primary group-hover:text-white transition-all duration-300">
                 4
               </div>
@@ -387,7 +395,7 @@ export default function Home() {
               <p className="text-slate-500 text-xs max-w-[200px] leading-relaxed">
                 Lakukan pembayaran aman, serah terima kunci di lokasi yang disepakati, dan mulailah perjalanan Anda dengan riang gembira!
               </p>
-            </div>
+            </FadeInScroll>
 
           </div>
 
@@ -412,18 +420,20 @@ export default function Home() {
           <div className="text-center max-w-2xl mx-auto mb-20">
             <h2 className="text-xs font-black text-primary uppercase tracking-widest mb-3">Testimoni</h2>
             <p className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
-              Apa Kata Mereka Tentang Kami
+              <SplitText text="Apa Kata Mereka Tentang Kami" className="justify-center" />
             </p>
-            <p className="text-slate-500 text-sm">
-              Ulasan asli dan tepercaya dari ratusan pelanggan setia yang telah merasakan pelayanan terbaik dari ArmadaKita.
-            </p>
+            <FadeInScroll delay={0.4}>
+              <p className="text-slate-500 text-sm">
+                Ulasan asli dan tepercaya dari ratusan pelanggan setia yang telah merasakan pelayanan terbaik dari ArmadaKita.
+              </p>
+            </FadeInScroll>
           </div>
 
           {/* Testimonials Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             
             {/* Testimonial 1 */}
-            <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+            <FadeInScroll delay={0.2} direction="up" className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
               <span className="material-symbols-outlined text-slate-200 dark:text-slate-850 text-6xl absolute top-6 right-6 pointer-events-none select-none">format_quote</span>
               <div className="space-y-4">
                 {/* Rating */}
@@ -445,10 +455,10 @@ export default function Home() {
                   <p className="text-slate-500 text-[10px]">Manager Operasional, Jakarta</p>
                 </div>
               </div>
-            </div>
+            </FadeInScroll>
 
             {/* Testimonial 2 */}
-            <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+            <FadeInScroll delay={0.4} direction="up" className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
               <span className="material-symbols-outlined text-slate-200 dark:text-slate-850 text-6xl absolute top-6 right-6 pointer-events-none select-none">format_quote</span>
               <div className="space-y-4">
                 {/* Rating */}
@@ -470,10 +480,10 @@ export default function Home() {
                   <p className="text-slate-500 text-[10px]">Ibu Rumah Tangga, Surabaya</p>
                 </div>
               </div>
-            </div>
+            </FadeInScroll>
 
             {/* Testimonial 3 */}
-            <div className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
+            <FadeInScroll delay={0.6} direction="up" className="bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/80 rounded-3xl p-8 relative flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow">
               <span className="material-symbols-outlined text-slate-200 dark:text-slate-850 text-6xl absolute top-6 right-6 pointer-events-none select-none">format_quote</span>
               <div className="space-y-4">
                 {/* Rating */}
@@ -495,7 +505,7 @@ export default function Home() {
                   <p className="text-slate-500 text-[10px]">Wiraswasta, Bandung</p>
                 </div>
               </div>
-            </div>
+            </FadeInScroll>
 
           </div>
 
@@ -509,12 +519,14 @@ export default function Home() {
 
         <div className="relative z-10 max-w-[1280px] w-full mx-auto px-4 md:px-8 lg:px-16 text-center space-y-8">
           <h2 className="text-3xl md:text-5xl font-black tracking-tight leading-tight max-w-3xl mx-auto">
-            Siap Memulai Perjalanan Indah Anda Bersama Kami?
+            <SplitText text="Siap Memulai Perjalanan Indah Anda Bersama Kami?" className="justify-center" />
           </h2>
-          <p className="text-slate-400 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-            Dapatkan diskon promo khusus pelanggan baru hingga 15% untuk penyewaan di atas 3 hari. Hubungi CS kami atau pesan langsung sekarang juga.
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-4 pt-4">
+          <FadeInScroll delay={0.4}>
+            <p className="text-slate-400 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+              Dapatkan diskon promo khusus pelanggan baru hingga 15% untuk penyewaan di atas 3 hari. Hubungi CS kami atau pesan langsung sekarang juga.
+            </p>
+          </FadeInScroll>
+          <FadeInScroll delay={0.6} className="flex flex-wrap justify-center items-center gap-4 pt-4">
             <a
               href="#fleet"
               className="bg-primary hover:bg-blue-700 text-white font-bold px-8 py-3.5 rounded-xl text-sm transition-all active:scale-95 shadow-lg shadow-blue-500/10"
@@ -530,7 +542,7 @@ export default function Home() {
               <span className="material-symbols-outlined text-green-500 text-lg">chat</span>
               Hubungi CS WhatsApp
             </a>
-          </div>
+          </FadeInScroll>
         </div>
       </section>
     </div>

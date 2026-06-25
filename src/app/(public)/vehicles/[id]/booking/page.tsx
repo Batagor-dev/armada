@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getVehicleById } from "@/data/vehicles";
 import BookingFormSection from "@/../components/sections/booking-form";
+import { FadeInScroll } from "@/../components/ui/animations/fade-in-scroll";
+import { SplitText } from "@/../components/ui/animations/split-text";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                               */
@@ -103,16 +105,18 @@ export default async function BookingPage({ params }: Props) {
               </span>
               <h1 className="text-3xl md:text-4xl font-black tracking-tight text-white leading-tight">
                 Pesan{" "}
-                <span className="premium-gradient-text">{vehicle.name}</span>
+                <span className="premium-gradient-text"><SplitText text={vehicle.name} /></span>
               </h1>
-              <p className="mt-2 text-white/60 text-sm max-w-lg">
-                Isi formulir di bawah ini. Setelah dikirim, tim kami akan menghubungi
-                Anda melalui WhatsApp untuk konfirmasi.
-              </p>
+              <FadeInScroll delay={0.4}>
+                <p className="mt-2 text-white/60 text-sm max-w-lg">
+                  Isi formulir di bawah ini. Setelah dikirim, tim kami akan menghubungi
+                  Anda melalui WhatsApp untuk konfirmasi.
+                </p>
+              </FadeInScroll>
             </div>
 
             {/* Price badge */}
-            <div className="text-right">
+            <FadeInScroll delay={0.6} direction="left" className="text-right">
                 <span className="inline-block mb-3 text-[11px] font-bold tracking-widest uppercase text-[#D9B77A] border border-[#D9B77A]/30 px-3 py-1 rounded-full">
                     Harga Sewa
                 </span>
@@ -126,7 +130,7 @@ export default async function BookingPage({ params }: Props) {
                 <p className="mt-2 text-white/60 text-sm">
                     Mulai dari / hari
                 </p>
-                </div>
+                </FadeInScroll>
           </div>
         </div>
       </section>
@@ -141,7 +145,7 @@ export default async function BookingPage({ params }: Props) {
         <div className="grid lg:grid-cols-[1fr_380px] gap-8 items-start">
 
           {/* =================== FORM CARD =================== */}
-          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] p-6 md:p-8 shadow-[var(--shadow-card)] animate-fade-in-up">
+          <FadeInScroll delay={0.2} direction="up" className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] p-6 md:p-8 shadow-[var(--shadow-card)]">
 
             <div className="mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">
@@ -157,10 +161,10 @@ export default async function BookingPage({ params }: Props) {
               vehicleId={vehicle.id}
               dailyPrice={vehicle.daily_price}
             />
-          </div>
+          </FadeInScroll>
 
           {/* =================== SIDEBAR =================== */}
-          <aside aria-label="Ringkasan kendaraan" className="space-y-5 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+          <FadeInScroll delay={0.4} direction="up" className="space-y-5">
 
             {/* Vehicle summary card */}
             <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] overflow-hidden shadow-[var(--shadow-card)]">
@@ -290,7 +294,7 @@ export default async function BookingPage({ params }: Props) {
               </svg>
               Tanya via WhatsApp
             </a>
-          </aside>
+          </FadeInScroll>
         </div>
       </section>
     </div>
